@@ -1,0 +1,19 @@
+{
+  "name": "generator-openstack",
+  "version": "1.0.0",
+  "description": "Yeoman Project Generator for OpenStack JavaScript Projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "files": [
+    "index.js",
+    "generators/app",
+    "generators/library"
+  ],
+  "author": "OpenStack <openstack-dev@lists.openstack.org> (http://www.openstack.org/)",
+  "license": "Apache-2.0"
+}
