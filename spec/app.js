@@ -7,9 +7,10 @@
   var generator = path.join(__dirname, '../generators/app');
   var composedGenerators = [
     [helpers.createDummyGenerator(), 'openstack:editorconfig'],
-    [helpers.createDummyGenerator(), 'openstack:gerrit']
+    [helpers.createDummyGenerator(), 'openstack:gerrit'],
+    [helpers.createDummyGenerator(), 'openstack:license']
   ];
-  
+
   describe('generator-openstack:app', function () {
     beforeEach(function (done) {
       helpers.run(generator)

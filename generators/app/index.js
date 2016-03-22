@@ -9,6 +9,7 @@
     'initializing': function () {
       this.composeWith('openstack:gerrit');
       this.composeWith('openstack:editorconfig');
+      this.composeWith('openstack:license');
     },
 
     prompting: function () {
