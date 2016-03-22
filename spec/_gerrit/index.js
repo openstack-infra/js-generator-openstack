@@ -4,9 +4,9 @@
   var assert = require('yeoman-assert');
   var helpers = require('yeoman-generator').test;
 
-  var generator = path.join(__dirname, '../../generators/gerrit');
+  var generator = path.join(__dirname, '../../generators/_gerrit');
 
-  describe('generator-openstack:gerrit', function () {
+  describe('generator-openstack:_gerrit', function () {
 
     describe('prompt enableGerrit:false', function () {
       beforeEach(function (done) {

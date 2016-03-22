@@ -5,9 +5,9 @@
 
   module.exports = yeoman.generators.Base.extend({
     initializing: function () {
-      this.composeWith('openstack:gerrit', {options: this.options});
-      this.composeWith('openstack:editorconfig', {options: this.options});
-      this.composeWith('openstack:license', {options: this.options});
+      this.composeWith('openstack:_gerrit', {options: this.options});
+      this.composeWith('openstack:_editorconfig', {options: this.options});
+      this.composeWith('openstack:_license', {options: this.options});
     },
 
     constructor: function () {
