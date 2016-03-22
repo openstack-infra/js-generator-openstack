@@ -1,10 +1,13 @@
 {
   "name": "generator-openstack",
+  "homepage": "http://www.openstack.org/",
   "version": "1.0.0",
   "description": "Yeoman Project Generator for OpenStack JavaScript Projects",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "gulp",
+    "prepublish": "gulp prepublish",
+    "lint": "eslint ./"
   },
   "keywords": [
     "yeoman-generator"
@@ -15,5 +18,25 @@
     "generators/library"
   ],
   "author": "OpenStack <openstack-dev@lists.openstack.org> (http://www.openstack.org/)",
-  "license": "Apache-2.0"
+  "license": "Apache-2.0",
+  "dependencies": {
+    "yeoman-generator": "^0.21.1",
+    "chalk": "^1.0.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "yeoman-assert": "2.0.0",
+    "eslint": "1.10.3",
+    "eslint-config-openstack": "1.2.4",
+    "gulp": "3.9.0",
+    "gulp-exclude-gitignore": "1.0.0",
+    "gulp-istanbul": "0.10.3",
+    "gulp-mocha": "2.0.0",
+    "gulp-plumber": "1.0.0",
+    "gulp-nsp": "2.1.0"
+  },
+  "eslintConfig": {
+    "extends": "openstack"
+  },
+  "repository": "https://github.com/krotscheck/generator-openstack"
 }
