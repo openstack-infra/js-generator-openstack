@@ -5,16 +5,13 @@
 
   module.exports = yeoman.generators.Base.extend({
 
-    /**
-     * Prompt the user for additional configuration variables.
-     */
     prompting: function () {
       var done = this.async();
 
       /**
        * Helper method, returns true if gerrit support is enabled.
        *
-       * @param response The current user response hash.
+       * @param {{}} response The current user response hash.
        * @returns {Boolean} True if gerrit is enabled, otherwise false.
        */
       function enableGerrit (response) {

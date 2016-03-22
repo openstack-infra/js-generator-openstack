@@ -6,7 +6,6 @@
 
   var generator = path.join(__dirname, '../../generators/gerrit');
 
-
   describe('generator-openstack:gerrit', function () {
 
     describe('enableGerrit:false', function () {
