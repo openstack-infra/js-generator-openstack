@@ -1,7 +1,7 @@
 {
   "name": "generator-openstack",
   "homepage": "http://www.openstack.org/",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Yeoman Project Generator for OpenStack JavaScript Projects",
   "main": "index.js",
   "scripts": {
