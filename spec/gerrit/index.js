@@ -99,5 +99,33 @@
         assert.fileContent('.gitreview', 'project=openstack/test_project.git');
       });
     });
+
+    describe('nonInteractive', function () {
+      beforeEach(function (done) {
+        helpers.run(generator)
+          .withOptions({'non-interactive': true})
+          .withLocalConfig({
+            enableGerrit: true,
+            gerritHost: 'test1.example.com',
+            gerritPort: 1000,
+            gerritProject: 'openstack/test_project_1.git'
+          })
+          .withPrompts({
+            enableGerrit: false,
+            gerritHost: 'test2.example.com',
+            gerritPort: 1001,
+            gerritProject: 'openstack/test_project_2.git'
+          })
+          .on('end', done);
+      });
+
+      it('should create a .gitreview file with local config values',
+        function () {
+          assert.fileContent('.gitreview', 'host=test1.example.com');
+          assert.fileContent('.gitreview', 'port=1000');
+          assert.fileContent('.gitreview',
+            'project=openstack/test_project_1.git');
+        });
+    });
   });
 })();

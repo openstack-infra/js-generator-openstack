@@ -8,7 +8,14 @@
     prompting: function () {
       var done = this.async();
       var self = this;
-      var config = self.config.getAll();
+
+      // Set our configuration defaults.
+      self.config.defaults({
+        enableGerrit: true,
+        gerritHost: 'review.openstack.org',
+        gerritPort: 29418,
+        gerritProject: 'openstack/your_project.git'
+      });
 
       /**
        * Helper method, returns true if gerrit support is enabled.
@@ -17,52 +24,44 @@
        * @returns {Boolean} True if gerrit is enabled, otherwise false.
        */
       function enableGerrit (answers) {
-        // First check the config object
-        if (config.hasOwnProperty('enableGerrit')) {
-          return !!config.enableGerrit;
-        }
         // Now check the answers.
-        return !!answers.enableGerrit;
+        return answers.enableGerrit;
       }
 
-      var prompts = [{
-        type: 'confirm',
-        required: true,
-        name: 'enableGerrit',
-        message: 'Will this project be managed by Gerrit?',
-        default: true
-      }, {
-        when: enableGerrit,
-        type: 'input',
-        required: true,
-        name: 'gerritHost',
-        message: 'Gerrit URL:',
-        default: 'review.openstack.org'
-      }, {
-        when: enableGerrit,
-        type: 'input',
-        required: true,
-        name: 'gerritPort',
-        message: 'Gerrit Port:',
-        default: 29418
-      }, {
-        when: enableGerrit,
-        type: 'input',
-        required: true,
-        name: 'gerritProject',
-        message: 'Gerrit Project:',
-        default: 'openstack/your_project.git'
-      }];
-
-      // Filter out anything not already set in .yo.rc
-      prompts = prompts.filter(function (item) {
-        return !config.hasOwnProperty(item.name);
-      });
-
-      self.prompt(prompts, function (answers) {
-        self.config.set(answers);
+      // Only go through the prompts if we're non-interactive.
+      if (!this.options.hasOwnProperty('non-interactive')) {
+        self.prompt(
+          [{
+            type: 'confirm',
+            name: 'enableGerrit',
+            message: 'Will this project be managed by Gerrit?',
+            default: self.config.get('enableGerrit')
+          }, {
+            when: enableGerrit,
+            type: 'input',
+            name: 'gerritHost',
+            message: 'Gerrit URL:',
+            default: self.config.get('gerritHost')
+          }, {
+            when: enableGerrit,
+            type: 'input',
+            name: 'gerritPort',
+            message: 'Gerrit Port:',
+            default: self.config.get('gerritPort')
+          }, {
+            when: enableGerrit,
+            type: 'input',
+            name: 'gerritProject',
+            message: 'Gerrit Project:',
+            default: self.config.get('gerritProject')
+          }],
+          function (answers) {
+            self.config.set(answers);
+            done();
+          });
+      } else {
         done();
-      });
+      }
     },
 
     writing: function () {
