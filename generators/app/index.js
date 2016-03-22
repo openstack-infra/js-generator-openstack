@@ -8,6 +8,7 @@
   module.exports = yeoman.generators.Base.extend({
     'initializing': function () {
       this.composeWith('openstack:gerrit');
+      this.composeWith('openstack:editorconfig');
     },
 
     prompting: function () {

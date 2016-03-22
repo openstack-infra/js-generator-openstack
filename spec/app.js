@@ -4,9 +4,16 @@
   var assert = require('yeoman-assert');
   var helpers = require('yeoman-generator').test;
 
+  var generator = path.join(__dirname, '../generators/app');
+  var composedGenerators = [
+    [helpers.createDummyGenerator(), 'openstack:editorconfig'],
+    [helpers.createDummyGenerator(), 'openstack:gerrit']
+  ];
+  
   describe('generator-openstack:app', function () {
     beforeEach(function (done) {
-      helpers.run(path.join(__dirname, '../generators/app'))
+      helpers.run(generator)
+        .withGenerators(composedGenerators)
         .withOptions({someOption: true})
         .withPrompts({someAnswer: true})
         .on('end', done);
