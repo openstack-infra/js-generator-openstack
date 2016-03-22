@@ -1,0 +1,4 @@
+[gerrit]
+host=<%= gerritHost %>
+port=<%= gerritPort %>
+project=<%= gerritProject %>

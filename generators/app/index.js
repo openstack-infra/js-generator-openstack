@@ -6,6 +6,10 @@
   var yosay = require('yosay');
 
   module.exports = yeoman.generators.Base.extend({
+    'initializing': function () {
+      this.composeWith('openstack:gerrit');
+    },
+
     prompting: function () {
       var done = this.async();
 
