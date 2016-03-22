@@ -1,0 +1,5 @@
+extends: openstack
+
+env:
+  node: true
+  jasmine: true
