@@ -11,15 +11,17 @@
     "lint": "eslint ./"
   },
   "keywords": [
-    "yeoman-generator"
+    "yeoman-generator",
+    "openstack"
   ],
   "files": [
-    "index.js",
-    "generators/app",
-    "generators/library"
+    "generators"
   ],
   "author": "OpenStack <openstack-dev@lists.openstack.org> (http://www.openstack.org/)",
   "license": "Apache-2.0",
+  "peerDependencies": {
+    "yo": "^1.7.0"
+  },
   "dependencies": {
     "yeoman-generator": "^0.21.1"
   },
