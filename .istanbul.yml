@@ -1,0 +1,27 @@
+verbose: false
+instrumentation:
+    include-all-sources: true
+reporting:
+    print: detail
+    reports:
+        - lcov
+        - html
+    dir: ./coverage
+    watermarks:
+        statements: [80, 100]
+        lines: [80, 100]
+        functions: [80, 100]
+        branches: [80, 100]
+check:
+    global:
+        statements: 1
+        lines: 1
+        branches: 1
+        functions: 1
+        excludes: []
+    each:
+        statements: 1
+        lines: 1
+        branches: 1
+        functions: 1
+        excludes: []
