@@ -21,9 +21,7 @@
   "author": "OpenStack <openstack-dev@lists.openstack.org> (http://www.openstack.org/)",
   "license": "Apache-2.0",
   "dependencies": {
-    "yeoman-generator": "^0.21.1",
-    "chalk": "^1.0.0",
-    "yosay": "^1.0.2"
+    "yeoman-generator": "^0.21.1"
   },
   "devDependencies": {
     "eslint": "1.10.3",

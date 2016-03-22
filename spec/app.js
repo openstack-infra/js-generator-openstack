@@ -20,10 +20,8 @@
         .on('end', done);
     });
 
-    it('creates files', function () {
-      assert.file([
-        'dummyfile.txt'
-      ]);
+    it('does nothing on its own', function () {
+      assert.file([]);
     });
   });
 })();
