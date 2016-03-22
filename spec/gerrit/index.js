@@ -8,7 +8,7 @@
 
   describe('generator-openstack:gerrit', function () {
 
-    describe('enableGerrit:false', function () {
+    describe('prompt enableGerrit:false', function () {
       beforeEach(function (done) {
         helpers.run(generator)
           .withPrompts({enableGerrit: false})
@@ -20,7 +20,7 @@
       });
     });
 
-    describe('enableGerrit:true with defaults', function () {
+    describe('prompt enableGerrit:true with defaults', function () {
       beforeEach(function (done) {
         helpers.run(generator)
           .withPrompts({
@@ -36,11 +36,56 @@
       });
     });
 
-    describe('enableGerrit:true with settings', function () {
+    describe('prompt enableGerrit:true with settings', function () {
       beforeEach(function (done) {
         helpers.run(generator)
           .withPrompts({
             enableGerrit: true,
+            gerritHost: 'host.example.com',
+            gerritPort: 1000,
+            gerritProject: 'openstack/test_project.git'
+          })
+          .on('end', done);
+      });
+
+      it('should create a .gitreview file', function () {
+        assert.fileContent('.gitreview', 'host=host.example.com');
+        assert.fileContent('.gitreview', 'port=1000');
+        assert.fileContent('.gitreview', 'project=openstack/test_project.git');
+      });
+    });
+
+    describe('config enableGerrit:false', function () {
+      beforeEach(function (done) {
+        helpers.run(generator)
+          .withLocalConfig({enableGerrit: false})
+          .on('end', done);
+      });
+
+      it('should not create a .gitreview file', function () {
+        assert.noFile('.gitreview');
+      });
+    });
+
+    describe('config enableGerrit:true with defaults', function () {
+      beforeEach(function (done) {
+        helpers.run(generator)
+          .withLocalConfig({enableGerrit: true})
+          .on('end', done);
+      });
+
+      it('should create a .gitreview file', function () {
+        assert.fileContent('.gitreview', 'host=review.openstack.org');
+        assert.fileContent('.gitreview', 'port=29418');
+        assert.fileContent('.gitreview', 'project=openstack/your_project.git');
+      });
+    });
+
+    describe('prompt enableGerrit:true with settings', function () {
+      beforeEach(function (done) {
+        helpers.run(generator)
+          .withLocalConfig({enableGerrit: true})
+          .withPrompts({
             gerritHost: 'host.example.com',
             gerritPort: 1000,
             gerritProject: 'openstack/test_project.git'
