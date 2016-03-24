@@ -3,6 +3,7 @@
     "enableGerrit": true,
     "gerritHost": "review.openstack.org",
     "gerritPort": 29418,
-    "gerritProject": "openstack/generator-openstack.git"
+    "gerritProject": "openstack/generator-openstack.git",
+    "projectName": "generator-openstack"
   }
 }

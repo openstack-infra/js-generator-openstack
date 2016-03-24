@@ -31,7 +31,8 @@
     "istanbul": "0.4.2",
     "jasmine": "2.4.1",
     "nsp": "2.2.1",
-    "yeoman-assert": "2.0.0"
+    "yeoman-assert": "2.0.0",
+    "yeoman-test": "^1.1.0"
   },
   "repository": "https://github.com/krotscheck/generator-openstack"
 }
