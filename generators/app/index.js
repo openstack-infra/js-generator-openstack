@@ -8,6 +8,7 @@
   var editorconfig = require('./lib/component/editorconfig');
   var license = require('./lib/component/license');
   var eslint = require('./lib/component/eslint');
+  var gitignore = require('./lib/component/gitignore');
 
   module.exports = yeoman.generators.Base.extend({
 
@@ -29,6 +30,7 @@
       editorconfig.init(this);    // Editorconfig
       license.init(this);         // Licensing
       eslint.init(this);          // Linting
+      gitignore.init(this);       // Gitignore
     },
 
     prompting: function() {
@@ -38,6 +40,7 @@
         editorconfig.prompt(this);    // Editorconfig
         license.prompt(this);         // Licensing
         eslint.prompt(this);          // Linting
+        gitignore.prompt(this);       // Gitignore
       }
     },
 
@@ -47,6 +50,7 @@
       editorconfig.configure(this);    // Editorconfig
       license.configure(this);         // Licensing
       eslint.configure(this);          // Linting
+      gitignore.configure(this);       // Gitignore
     },
 
     writing: function() {
