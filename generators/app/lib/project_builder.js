@@ -26,6 +26,17 @@
   }
 
   /**
+   * Write a file to the project.
+   *
+   * @param {String} destinationPath The destination for the file.
+   * @param {String|Function} content A string of content, or method that returns one.
+   * @returns {void}
+   */
+  function writeFile (destinationPath, content) {
+    includedFiles.push({to: destinationPath, content: content});
+  }
+
+  /**
    * Get a list of all files that are to be included.
    *
    * @returns {Array} A list of all file mappings: {from:, to:}
@@ -55,6 +66,7 @@
 
   module.exports = {
     addFile: addFile,
+    writeFile: writeFile,
     removeFile: removeFile,
     getIncludedFiles: getIncludedFiles,
     getExcludedFiles: getExcludedFiles,

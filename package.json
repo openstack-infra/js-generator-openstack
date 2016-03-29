@@ -23,6 +23,7 @@
     "yo": "^1.7.0"
   },
   "dependencies": {
+    "js-yaml": "^3.5.5",
     "yeoman-generator": "^0.21.1"
   },
   "devDependencies": {
