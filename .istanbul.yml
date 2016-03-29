@@ -9,7 +9,7 @@ reporting:
     reports:
         - lcov
         - html
-    dir: ./coverage
+    dir: ./cover
     watermarks:
         statements: [80, 100]
         lines: [80, 100]
