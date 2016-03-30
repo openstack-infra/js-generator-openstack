@@ -14,6 +14,9 @@ Creating and updating a project follows the exact same steps:
 3. `cd my_project_directory`
 4. `yo openstack`
 
+The generator also provides a non-interactive mode: `yo openstack --non-interactive`
+
+
 
 ## Contributing
 
@@ -34,6 +37,16 @@ This should set up your project directory and make it ready for development.
 * `npm test` - Run all the tests.
 * `npm run lint` - Perform a linting check.
 
+## TODO List
+Looking for something to add? Here's a quick checklist:
+
+* Prompt user for the project name, and make it accessible to all submodules.
+* Choose the type of project they'd like to generate: Library, Web UI, or CLI Node App
+	* Basic project setup for these different types will also be needed.
+* package.json creation and maintenance
+* Ensure that license is persisted into package.json
+* dependency propagation from global requirements
+* CLI documentation for `--non-interactive`
 
 ## Project Resources
 
