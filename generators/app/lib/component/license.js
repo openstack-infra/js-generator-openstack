@@ -1,7 +1,8 @@
-(function () {
+(function() {
   'use strict';
 
   var projectBuilder = require('../project_builder');
+  var pkgBuilder = require('../pkg_builder');
 
   /**
    * No-op placeholder method, for handlers we don't need.
@@ -21,6 +22,7 @@
    */
   function configureLicense (generator) {
     projectBuilder.addFile('LICENSE');
+    pkgBuilder.setValues({license: 'Apache-2.0'});
 
     return generator;
   }

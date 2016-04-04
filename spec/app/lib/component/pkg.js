@@ -2,13 +2,13 @@
   'use strict';
   var libDir = '../../../../generators/app/lib';
 
-  var license = require(libDir + '/component/license');
+  var pkg = require(libDir + '/component/pkg');
   var projectBuilder = require(libDir + '/project_builder');
   var pkgBuilder = require(libDir + '/pkg_builder');
   var mocks = require('../../../helpers/mocks');
   var mockGenerator;
 
-  describe('generator-openstack:lib/component/license', function() {
+  describe('generator-openstack:lib/component/pkg', function() {
 
     beforeEach(function() {
       mockGenerator = mocks.buildGenerator();
@@ -17,37 +17,39 @@
 
     it('should define init, prompt, and configure',
       function() {
-        expect(typeof license.init).toBe('function');
-        expect(typeof license.prompt).toBe('function');
-        expect(typeof license.configure).toBe('function');
+        expect(typeof pkg.init).toBe('function');
+        expect(typeof pkg.prompt).toBe('function');
+        expect(typeof pkg.configure).toBe('function');
       });
 
     describe('init()', function() {
       it('should return a generator',
         function() {
-          var outputGenerator = license.init(mockGenerator);
+          var outputGenerator = pkg.init(mockGenerator);
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
-      it('should do nothing',
+      it('should read an existing package.json file into the package builder',
         function() {
-          var spy = spyOn(mockGenerator.config, 'defaults');
-          license.init(mockGenerator);
-          expect(spy.calls.any()).toBeFalsy();
+          mockGenerator.fs.writeJSON("package.json", {name: "foo"});
+
+          pkg.init(mockGenerator);
+          var output = JSON.parse(pkgBuilder.toJSON());
+          expect(output.name).toBe('foo');
         });
     });
 
     describe('prompt()', function() {
       it('should return a generator',
         function() {
-          var outputGenerator = license.prompt(mockGenerator);
+          var outputGenerator = pkg.prompt(mockGenerator);
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
       it('should do nothing',
         function() {
           var spy = spyOn(mockGenerator, 'prompt');
-          license.prompt(mockGenerator);
+          pkg.prompt(mockGenerator);
           expect(spy.calls.any()).toBeFalsy();
         });
     });
@@ -55,26 +57,18 @@
     describe('configure()', function() {
       it('should return a generator',
         function() {
-          var outputGenerator = license.configure(mockGenerator);
+          var outputGenerator = pkg.configure(mockGenerator);
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
-      it('should add license to the project files.',
+      it('should add package.json to the project files.',
         function() {
-          license.configure(mockGenerator);
+          pkg.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
           expect(files.length).toBe(1);
-          expect(files[0].from).toBe('LICENSE');
-          expect(files[0].to).toBe('LICENSE');
-        });
-
-      it('should add license to the package.json files.',
-        function() {
-          license.configure(mockGenerator);
-
-          var parsedResult = JSON.parse(pkgBuilder.toJSON());
-          expect(parsedResult.license).toBe("Apache-2.0");
+          expect(files[0].to).toBe('package.json');
+          expect(files[0].content).toBe(pkgBuilder.toJSON);
         });
     });
   });

@@ -5,6 +5,7 @@
   var projectBuilder = require('./lib/project_builder');
   var Q = require('q');
 
+  var pkg = require('./lib/component/pkg');
   var gerrit = require('./lib/component/gerrit');
   var editorconfig = require('./lib/component/editorconfig');
   var license = require('./lib/component/license');
@@ -30,7 +31,8 @@
 
       // Initialize components.
       Q(this)
-        .then(gerrit.init)         // Gerrit
+        .then(pkg.init)             // Package.json
+        .then(gerrit.init)          // Gerrit
         .then(editorconfig.init)    // Editorconfig
         .then(license.init)         // Licensing
         .then(eslint.init)          // Linting
@@ -46,7 +48,8 @@
 
         // Prompt components.
         Q(this)
-          .then(gerrit.prompt)         // Gerrit
+          .then(pkg.prompt)             // Package.json
+          .then(gerrit.prompt)          // Gerrit
           .then(editorconfig.prompt)    // Editorconfig
           .then(license.prompt)         // Licensing
           .then(eslint.prompt)          // Linting
@@ -62,7 +65,8 @@
 
       // Configure components.
       Q(this)
-        .then(gerrit.configure)         // Gerrit
+        .then(pkg.configure)             // Package.json
+        .then(gerrit.configure)          // Gerrit
         .then(editorconfig.configure)    // Editorconfig
         .then(license.configure)         // Licensing
         .then(eslint.configure)          // Linting
