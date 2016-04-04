@@ -11,10 +11,10 @@
   var eslint = require('./lib/component/eslint');
   var gitignore = require('./lib/component/gitignore');
 
-  module.exports = yeoman.generators.Base.extend({
+  module.exports = yeoman.Base.extend({
 
     constructor: function() {
-      yeoman.generators.Base.apply(this, arguments);
+      yeoman.Base.apply(this, arguments);
 
       // Add support for a `--non-interactive` flag
       this.option('non-interactive');
