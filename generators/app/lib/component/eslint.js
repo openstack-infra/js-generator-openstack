@@ -12,18 +12,19 @@
   /**
    * No-op placeholder method, for handlers we don't need.
    *
-   * @returns {void}
+   * @param {generator} generator The currently active generator.
+   * @returns {generator} The passed generator, for promise chaining.
    */
-  function noop () {
-    // Do nothing.
+  function noop (generator) {
+    return generator;
   }
 
   /**
    * Read the existing .eslintrc and .eslintignore files, and populate our initial configuration
    * with them.
    *
-   * @param {*} generator The currently active yeoman generator.
-   * @returns {void}
+   * @param {generator} generator The currently active generator.
+   * @returns {generator} The passed generator, for promise chaining.
    */
   function initializeEslint (generator) {
     var fs = generator.fs;
@@ -42,20 +43,25 @@
     if (fs.exists(rcFile)) {
       eslintrc = yaml.safeLoad(fs.read(rcFile));
     }
+
+    return generator;
   }
 
   /**
    * Configure the project by adding required files.
    *
-   * @returns {void}
+   * @param {generator} generator The currently active generator.
+   * @returns {generator} The passed generator, for promise chaining.
    */
-  function configureEslint () {
+  function configureEslint (generator) {
     if (buildEslintIgnore().length === 0) {
       projectBuilder.removeFile('.eslintignore');
     } else {
       projectBuilder.writeFile('.eslintignore', buildEslintIgnore);
     }
     projectBuilder.writeFile('.eslintrc', buildEslintRc);
+
+    return generator;
   }
 
   /**

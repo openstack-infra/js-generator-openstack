@@ -3,6 +3,7 @@
 
   var yeoman = require('yeoman-generator');
   var projectBuilder = require('./lib/project_builder');
+  var Q = require('q');
 
   var gerrit = require('./lib/component/gerrit');
   var editorconfig = require('./lib/component/editorconfig');
@@ -20,37 +21,55 @@
     },
 
     initializing: function() {
+      var done = this.async();
+
       // Set our own defaults.
       this.config.defaults({
         projectName: this.appname
       });
 
       // Initialize components.
-      gerrit.init(this);          // Gerrit
-      editorconfig.init(this);    // Editorconfig
-      license.init(this);         // Licensing
-      eslint.init(this);          // Linting
-      gitignore.init(this);       // Gitignore
+      Q(this)
+        .then(gerrit.init)         // Gerrit
+        .then(editorconfig.init)    // Editorconfig
+        .then(license.init)         // Licensing
+        .then(eslint.init)          // Linting
+        .then(gitignore.init)       // Gitignore
+        .then(function() {
+          done();
+        });
     },
 
     prompting: function() {
       if (!this.options['non-interactive']) {
+        var done = this.async();
+
         // Prompt components.
-        gerrit.prompt(this);          // Gerrit
-        editorconfig.prompt(this);    // Editorconfig
-        license.prompt(this);         // Licensing
-        eslint.prompt(this);          // Linting
-        gitignore.prompt(this);       // Gitignore
+        Q(this)
+          .then(gerrit.prompt)         // Gerrit
+          .then(editorconfig.prompt)    // Editorconfig
+          .then(license.prompt)         // Licensing
+          .then(eslint.prompt)          // Linting
+          .then(gitignore.prompt)       // Gitignore
+          .then(function() {
+            done();
+          });
       }
     },
 
     configuring: function() {
+      var done = this.async();
+
       // Configure components.
-      gerrit.configure(this);          // Gerrit
-      editorconfig.configure(this);    // Editorconfig
-      license.configure(this);         // Licensing
-      eslint.configure(this);          // Linting
-      gitignore.configure(this);       // Gitignore
+      Q(this)
+        .then(gerrit.configure)         // Gerrit
+        .then(editorconfig.configure)    // Editorconfig
+        .then(license.configure)         // Licensing
+        .then(eslint.configure)          // Linting
+        .then(gitignore.configure)       // Gitignore
+        .then(function() {
+          done();
+        });
     },
 
     writing: function() {

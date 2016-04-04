@@ -25,6 +25,7 @@
   "dependencies": {
     "ini": "^1.3.4",
     "js-yaml": "^3.5.5",
+    "q": "^1.4.1",
     "yeoman-generator": "^0.21.1"
   },
   "devDependencies": {
@@ -32,6 +33,8 @@
     "eslint-config-openstack": "1.2.4",
     "istanbul": "0.4.2",
     "jasmine": "2.4.1",
+    "karma": "^0.13.22",
+    "karma-htmlfile-reporter": "^0.2.2",
     "nsp": "2.2.1",
     "yeoman-assert": "2.0.0",
     "yeoman-test": "^1.1.0"

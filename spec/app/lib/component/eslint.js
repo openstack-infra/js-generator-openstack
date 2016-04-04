@@ -25,6 +25,12 @@
       });
 
     describe('init()', function() {
+      it('should return a generator',
+        function () {
+          var outputGenerator = eslint.init(mockGenerator);
+          expect(outputGenerator).toEqual(mockGenerator);
+        });
+
       it('should not interact with config',
         function() {
           var spy = spyOn(mockGenerator.config, 'defaults');
@@ -34,6 +40,12 @@
     });
 
     describe('prompt()', function() {
+      it('should return a generator',
+        function () {
+          var outputGenerator = eslint.prompt(mockGenerator);
+          expect(outputGenerator).toEqual(mockGenerator);
+        });
+
       it('should do nothing',
         function() {
           var spy = spyOn(mockGenerator, 'prompt');
@@ -43,6 +55,12 @@
     });
 
     describe('configure()', function() {
+      it('should return a generator',
+        function () {
+          var outputGenerator = eslint.configure(mockGenerator);
+          expect(outputGenerator).toEqual(mockGenerator);
+        });
+
       it('should add .eslintrc and .eslintignore to the project files.',
         function() {
           eslint.configure(mockGenerator);

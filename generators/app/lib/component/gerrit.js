@@ -3,6 +3,7 @@
 
   var projectBuilder = require('../project_builder');
   var ini = require('ini');
+  var Q = require('q');
 
   var gerritFile = '.gitreview';
   var iniDefaults = {
@@ -28,8 +29,8 @@
    * Initialize the gerrit component of this generator. In this case, we're
    * only adding default configuration values.
    *
-   * @param {Base} generator The generator to configure.
-   * @returns {void}
+   * @param {generator} generator The currently active generator.
+   * @returns {generator} The passed generator, for promise chaining.
    */
   function initializeGerrit (generator) {
     // Define our defaults
@@ -43,45 +44,46 @@
 
     // Set the configuration defaults.
     generator.config.defaults({enableGerrit: true});
+
+    return generator;
   }
 
   /**
    * Initialize the gerrit component of this generator. In this case, we're
    * only adding default configuration values.
    *
-   * @param {Base} generator The generator to configure.
-   * @returns {void}
+   * @param {generator} generator The currently active generator.
+   * @returns {generator} The passed generator, for promise chaining.
    */
   function promptUserOptions (generator) {
-    var done = generator.async();
-
-    var prompts = [{
-      type: 'confirm',
-      name: 'enableGerrit',
-      message: 'Will this project be managed by Gerrit?',
-      default: generator.config.get('enableGerrit')
-    }, {
-      when: gerritEnabled,
-      type: 'input',
-      name: 'gerritHost',
-      message: 'Gerrit URL:',
-      default: iniContent.gerrit.host
-    }, {
-      when: gerritEnabled,
-      type: 'input',
-      name: 'gerritPort',
-      message: 'Gerrit Port:',
-      default: iniContent.gerrit.port
-    }, {
-      when: gerritEnabled,
-      type: 'input',
-      name: 'gerritProject',
-      message: 'Gerrit Project:',
-      default: iniContent.gerrit.project
-    }];
+    var deferred = Q.defer();
 
     // Go through the prompts.
-    generator.prompt(prompts,
+    generator.prompt(
+      [{
+        type: 'confirm',
+        name: 'enableGerrit',
+        message: 'Will this project be managed by Gerrit?',
+        default: generator.config.get('enableGerrit')
+      }, {
+        when: gerritEnabled,
+        type: 'input',
+        name: 'gerritHost',
+        message: 'Gerrit URL:',
+        default: iniContent.gerrit.host
+      }, {
+        when: gerritEnabled,
+        type: 'input',
+        name: 'gerritPort',
+        message: 'Gerrit Port:',
+        default: iniContent.gerrit.port
+      }, {
+        when: gerritEnabled,
+        type: 'input',
+        name: 'gerritProject',
+        message: 'Gerrit Project:',
+        default: iniContent.gerrit.project
+      }],
       function(answers) {
         generator.config.set({
           enableGerrit: answers.enableGerrit
@@ -92,16 +94,27 @@
           port: answers.gerritPort,
           project: answers.gerritProject
         };
-        done();
+
+        deferred.resolve(generator);
       });
+
+    return deferred.promise;
   }
 
+  /**
+   * Configure gerrit
+   *
+   * @param {generator} generator The currently active generator.
+   * @returns {generator} The passed generator, for promise chaining.
+   */
   function configureGerrit (generator) {
     if (generator.config.get('enableGerrit')) {
       projectBuilder.writeFile(gerritFile, buildGerritFile);
     } else {
       projectBuilder.removeFile(gerritFile);
     }
+
+    return generator;
   }
 
   function buildGerritFile () {
@@ -113,4 +126,5 @@
     prompt: promptUserOptions,
     configure: configureGerrit
   };
-})();
+})
+();

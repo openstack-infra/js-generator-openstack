@@ -22,6 +22,12 @@
       });
 
     describe('init()', function () {
+      it('should return a generator',
+        function () {
+          var outputGenerator = editorconfig.init(mockGenerator);
+          expect(outputGenerator).toEqual(mockGenerator);
+        });
+
       it('should do nothing',
         function () {
           var spy = spyOn(mockGenerator.config, 'defaults');
@@ -31,6 +37,12 @@
     });
 
     describe('prompt()', function () {
+      it('should return a generator',
+        function () {
+          var outputGenerator = editorconfig.prompt(mockGenerator);
+          expect(outputGenerator).toEqual(mockGenerator);
+        });
+
       it('should do nothing',
         function () {
           var spy = spyOn(mockGenerator, 'prompt');
@@ -40,6 +52,12 @@
     });
 
     describe('configure()', function () {
+      it('should return a generator',
+        function () {
+          var outputGenerator = editorconfig.configure(mockGenerator);
+          expect(outputGenerator).toEqual(mockGenerator);
+        });
+
       it('should add editorconfig to the project files.',
         function () {
           editorconfig.configure(mockGenerator);

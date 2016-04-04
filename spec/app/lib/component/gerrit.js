@@ -55,6 +55,13 @@
       });
 
     describe('init()', function() {
+      it('should return a generator',
+        function () {
+          var generator = mocks.buildGenerator();
+          var outputGenerator = gerrit.init(generator);
+          expect(outputGenerator).toEqual(generator);
+        });
+
       it('should set defaults',
         function() {
           var generator = mocks.buildGenerator();
@@ -91,6 +98,12 @@
     });
 
     describe('prompt()', function() {
+      it('should return a generator',
+        function () {
+          var generator = mocks.buildGenerator();
+          var outputGenerator = gerrit.init(generator);
+          expect(outputGenerator).toEqual(generator);
+        });
 
       it('should revert to config defaults if no answers provided',
         function() {
@@ -144,6 +157,13 @@
     });
 
     describe('configure()', function() {
+      it('should return a generator',
+        function () {
+          var generator = mocks.buildGenerator();
+          var outputGenerator = gerrit.init(generator);
+          expect(outputGenerator).toEqual(generator);
+        });
+
       it('should create a .gitreview file if enabled',
         function() {
           var mockConfig = {enableGerrit: true};
