@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   var pkgContent = {};
@@ -37,9 +37,33 @@
     }
   }
 
+  /**
+   * Get the values of the current package.
+   *
+   * @returns {{}} A cloned map of the values.
+   */
+  function getValues () {
+    return JSON.parse(JSON.stringify(pkgContent));
+  }
+
+  /**
+   * Get a specific value from the package.json file.
+   *
+   * @param {String} name The name of the value.
+   * @returns {{}} A clone of the referenced value.
+   */
+  function getValue (name) {
+    if (pkgContent.hasOwnProperty(name)) {
+      return JSON.parse(JSON.stringify(pkgContent[name]));
+    }
+    return undefined;
+  }
+
   module.exports = {
     fromJSON: readPackage,
     toJSON: writePackage,
-    setValues: setValues
+    setValues: setValues,
+    getValues: getValues,
+    getValue: getValue
   };
 })();

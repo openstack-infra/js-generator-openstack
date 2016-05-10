@@ -1,20 +1,20 @@
-(function() {
+(function () {
   'use strict';
   var builder = require('../../../generators/app/lib/pkg_builder');
 
-  describe('generator-openstack:lib/pkg_builder', function() {
+  describe('generator-openstack:lib/pkg_builder', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       builder.fromJSON("{}"); // Clear
     });
 
     it('should start as an empty object',
-      function() {
+      function () {
         expect(builder.toJSON()).toBe("{}");
       });
 
     it('should honor and echo back any pre-loaded package file',
-      function() {
+      function () {
         var packageString = '{"name":"foo"}';
         builder.fromJSON(packageString);
 
@@ -23,7 +23,7 @@
       });
 
     it('should permit adding and overriding values.',
-      function() {
+      function () {
         builder.fromJSON('{"name":"foo"}');
         builder.setValues({name: "bar", lol: "cat"});
 
@@ -33,7 +33,7 @@
       });
 
     it('should not add parent prototype values.',
-      function() {
+      function () {
         function Thing () {
         }
 
@@ -51,5 +51,27 @@
         expect(parsedResult.lol).toBe("cat");
         expect(parsedResult.foo).toBeUndefined();
       });
+
+    describe('getValues()', function () {
+      it('should permit retrieving the entire package block.',
+        function () {
+          builder.fromJSON('{"name":"foo"}');
+          expect(builder.getValues()).toEqual({name: 'foo'});
+        });
+    });
+
+    describe('getValue()', function () {
+      it('should permit retrieving values from the package.',
+        function () {
+          builder.fromJSON('{"name":"foo"}');
+          expect(builder.getValue('name')).toBe('foo');
+        });
+
+      it('should return undefined if the value is not set.',
+        function () {
+          builder.fromJSON('{"name":"foo"}');
+          expect(builder.getValue('invalidname')).toBeUndefined();
+        });
+    });
   });
 })();
