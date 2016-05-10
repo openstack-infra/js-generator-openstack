@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   function buildMockGenerator (config, mockAnswers, mockOptions) {
@@ -9,26 +9,27 @@
 
     config = config || {};
     mockAnswers = mockAnswers || {};
+    mockOptions = mockOptions || {};
 
     return {
       fs: editor.create(store),
       appname: 'generator-openstack',
-      async: function() {
-        return function() {
+      async: function () {
+        return function () {
         };
       },
       config: {
-        defaults: function(values) {
-          Object.keys(values).forEach(function(key) {
+        defaults: function (values) {
+          Object.keys(values).forEach(function (key) {
             configDefaults[key] = values[key];
           });
         },
-        get: function(value) {
+        get: function (value) {
           return config[value] || configDefaults[value];
         },
-        set: function(key, value) {
+        set: function (key, value) {
           if (typeof key === 'object') {
-            Object.keys(key).forEach(function(index) {
+            Object.keys(key).forEach(function (index) {
               config[index] = key[index];
             });
           } else {
@@ -36,9 +37,9 @@
           }
         }
       },
-      prompt: function(params, callback) {
+      prompt: function (params, callback) {
         var answers = {};
-        params.forEach(function(param) {
+        params.forEach(function (param) {
 
           if (param.when && !param.when(answers)) {
             return;

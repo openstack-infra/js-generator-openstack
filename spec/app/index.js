@@ -34,31 +34,6 @@
           });
       });
 
-    it('should call no module prompts with the --non-interactive flag',
-      function(done) {
-        var promptSpies = [];
-        var regularSpies = [];
-        modules.forEach(function(name) {
-          var module = require('../../generators/app/lib/component/' + name);
-          regularSpies.push(spyOn(module, 'init').and.callThrough());
-          promptSpies.push(spyOn(module, 'prompt').and.callThrough());
-          regularSpies.push(spyOn(module, 'configure').and.callThrough());
-        });
-
-        helpers.run(generator)
-          .withOptions({'non-interactive': true})
-          .on('end', function() {
-            promptSpies.forEach(function(spy) {
-              expect(spy.calls.any()).toBeFalsy();
-            });
-            regularSpies.forEach(function(spy) {
-              expect(spy.calls.any()).toBeTruthy();
-            });
-
-            done();
-          });
-      });
-
     describe('writing()', function() {
       it('should create all files created in the project builder',
         function(done) {

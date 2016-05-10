@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   var projectBuilder = require('../project_builder');
@@ -21,7 +21,7 @@
    * @param {String} answers The collection of answers.
    * @returns {Function} True if enableGerrit is set, otherwise false.
    */
-  var gerritEnabled = function(answers) {
+  var gerritEnabled = function (answers) {
     return !!answers.enableGerrit;
   };
 
@@ -58,46 +58,49 @@
   function promptUserOptions (generator) {
     var deferred = Q.defer();
 
-    // Go through the prompts.
-    generator.prompt(
-      [{
-        type: 'confirm',
-        name: 'enableGerrit',
-        message: 'Will this project be managed by Gerrit?',
-        default: generator.config.get('enableGerrit')
-      }, {
-        when: gerritEnabled,
-        type: 'input',
-        name: 'gerritHost',
-        message: 'Gerrit URL:',
-        default: iniContent.gerrit.host
-      }, {
-        when: gerritEnabled,
-        type: 'input',
-        name: 'gerritPort',
-        message: 'Gerrit Port:',
-        default: iniContent.gerrit.port
-      }, {
-        when: gerritEnabled,
-        type: 'input',
-        name: 'gerritProject',
-        message: 'Gerrit Project:',
-        default: iniContent.gerrit.project
-      }],
-      function(answers) {
-        generator.config.set({
-          enableGerrit: answers.enableGerrit
+    if (!generator.options['non-interactive']) {
+      // Go through the prompts.
+      generator.prompt(
+        [{
+          type: 'confirm',
+          name: 'enableGerrit',
+          message: 'Will this project be managed by Gerrit?',
+          default: generator.config.get('enableGerrit')
+        }, {
+          when: gerritEnabled,
+          type: 'input',
+          name: 'gerritHost',
+          message: 'Gerrit URL:',
+          default: iniContent.gerrit.host
+        }, {
+          when: gerritEnabled,
+          type: 'input',
+          name: 'gerritPort',
+          message: 'Gerrit Port:',
+          default: iniContent.gerrit.port
+        }, {
+          when: gerritEnabled,
+          type: 'input',
+          name: 'gerritProject',
+          message: 'Gerrit Project:',
+          default: iniContent.gerrit.project
+        }],
+        function (answers) {
+          generator.config.set({
+            enableGerrit: answers.enableGerrit
+          });
+
+          iniContent.gerrit = {
+            host: answers.gerritHost,
+            port: answers.gerritPort,
+            project: answers.gerritProject
+          };
+
+          deferred.resolve(generator);
         });
-
-        iniContent.gerrit = {
-          host: answers.gerritHost,
-          port: answers.gerritPort,
-          project: answers.gerritProject
-        };
-
-        deferred.resolve(generator);
-      });
-
+    } else {
+      deferred.resolve(generator);
+    }
     return deferred.promise;
   }
 

@@ -43,21 +43,19 @@
     },
 
     prompting: function() {
-      if (!this.options['non-interactive']) {
-        var done = this.async();
+      var done = this.async();
 
-        // Prompt components.
-        Q(this)
-          .then(pkg.prompt)             // Package.json
-          .then(gerrit.prompt)          // Gerrit
-          .then(editorconfig.prompt)    // Editorconfig
-          .then(license.prompt)         // Licensing
-          .then(eslint.prompt)          // Linting
-          .then(gitignore.prompt)       // Gitignore
-          .then(function() {
-            done();
-          });
-      }
+      // Prompt components.
+      Q(this)
+        .then(pkg.prompt)             // Package.json
+        .then(gerrit.prompt)          // Gerrit
+        .then(editorconfig.prompt)    // Editorconfig
+        .then(license.prompt)         // Licensing
+        .then(eslint.prompt)          // Linting
+        .then(gitignore.prompt)       // Gitignore
+        .then(function() {
+          done();
+        });
     },
 
     configuring: function() {

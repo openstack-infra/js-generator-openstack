@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
   var libDir = '../../../../generators/app/lib';
 
@@ -30,7 +30,7 @@
 
     // get the .gitreview file
     var gitreview = null;
-    files.forEach(function(fileRef) {
+    files.forEach(function (fileRef) {
       if (fileRef.to === '.gitreview') {
         gitreview = ini.parse(fileRef.content());
       }
@@ -41,20 +41,20 @@
     expect(content).toEqual(gitreview);
   }
 
-  describe('generator-openstack:lib/component/gerrit', function() {
+  describe('generator-openstack:lib/component/gerrit', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       projectBuilder.clear();
     });
 
     it('should define init, prompt, and configure',
-      function() {
+      function () {
         expect(typeof gerrit.init).toBe('function');
         expect(typeof gerrit.prompt).toBe('function');
         expect(typeof gerrit.configure).toBe('function');
       });
 
-    describe('init()', function() {
+    describe('init()', function () {
       it('should return a generator',
         function () {
           var generator = mocks.buildGenerator();
@@ -63,7 +63,7 @@
         });
 
       it('should set defaults',
-        function() {
+        function () {
           var generator = mocks.buildGenerator();
           var spy = spyOn(generator.config, 'defaults');
           gerrit.init(generator);
@@ -72,7 +72,7 @@
         });
 
       it('should revert to defaults if no answers provided',
-        function() {
+        function () {
           var config = {};
           var mockAnswers = {};
           var generator = mocks.buildGenerator(config, mockAnswers);
@@ -86,7 +86,7 @@
         });
 
       it('should read default values from an existing .gitreview file.',
-        function() {
+        function () {
           var generator = mocks.buildGenerator();
 
           generator.fs.write('.gitreview', ini.stringify(iniFile));
@@ -97,7 +97,7 @@
         });
     });
 
-    describe('prompt()', function() {
+    describe('prompt()', function () {
       it('should return a generator',
         function () {
           var generator = mocks.buildGenerator();
@@ -106,7 +106,7 @@
         });
 
       it('should revert to config defaults if no answers provided',
-        function() {
+        function () {
           var config = {};
           var mockAnswers = {};
           var generator = mocks.buildGenerator(config, mockAnswers);
@@ -119,8 +119,22 @@
           expect(config).toEqual(expectedConfigDefaults);
         });
 
+      it('should not show a prompt if non-interactive is set',
+        function () {
+          var generator = mocks.buildGenerator(null, null,
+            {'non-interactive': true});
+          var promptSpy = spyOn(generator, 'prompt');
+
+          generator.fs.write('.gitreview', ini.stringify(iniFile));
+
+          gerrit.init(generator);
+          gerrit.prompt(generator);
+
+          expect(promptSpy.calls.any()).toBeFalsy();
+        });
+
       it('should use defaults in .gitreview if no answers provided',
-        function() {
+        function () {
           var generator = mocks.buildGenerator();
 
           generator.fs.write('.gitreview', ini.stringify(iniFile));
@@ -131,7 +145,7 @@
         });
 
       it('should configure answers if answers provided',
-        function() {
+        function () {
           var config = {};
           var mockAnswers = {
             enableGerrit: true,
@@ -156,7 +170,7 @@
         });
     });
 
-    describe('configure()', function() {
+    describe('configure()', function () {
       it('should return a generator',
         function () {
           var generator = mocks.buildGenerator();
@@ -165,7 +179,7 @@
         });
 
       it('should create a .gitreview file if enabled',
-        function() {
+        function () {
           var mockConfig = {enableGerrit: true};
           var generator = mocks.buildGenerator(mockConfig);
 
@@ -188,7 +202,7 @@
         });
 
       it('should delete a .gitreview file if disabled',
-        function() {
+        function () {
           var mockConfig = {enableGerrit: false};
           var generator = mocks.buildGenerator(mockConfig);
           gerrit.configure(generator);
