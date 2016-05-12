@@ -1,0 +1,9 @@
+Code-Review+2: Michael Krotscheck <krotscheck@gmail.com>
+Workflow+1: Michael Krotscheck <krotscheck@gmail.com>
+Code-Review+1: venkatamahesh <venkatamaheshkotha@gmail.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Thu, 12 May 2016 15:57:17 +0000
+Reviewed-on: https://review.openstack.org/315194
+Project: openstack-infra/js-generator-openstack
+Branch: refs/heads/master
