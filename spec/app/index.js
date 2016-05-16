@@ -25,11 +25,24 @@
         });
 
         helpers.run(generator)
+          .withArguments(['--non-interactive'])
           .on('end', function() {
             spies.forEach(function(spy) {
               expect(spy.calls.any()).toBeTruthy();
             });
 
+            done();
+          });
+      });
+
+    it('should force overwrite if --non-interactive is set.',
+      function (done) {
+        helpers.run(generator)
+          .withArguments(['--non-interactive'])
+          .on('ready', function (generator) {
+            expect(generator.conflicter.force).toBeTruthy();
+          })
+          .on('end', function () {
             done();
           });
       });
