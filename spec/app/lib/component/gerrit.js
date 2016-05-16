@@ -1,4 +1,4 @@
-(function () {
+(function() {
   'use strict';
   var libDir = '../../../../generators/app/lib';
 
@@ -6,11 +6,9 @@
 
   var gerrit = require(libDir + '/component/gerrit');
   var projectBuilder = require(libDir + '/project_builder');
+  var pkgBuilder = require(libDir + '/pkg_builder');
   var mocks = require('../../../helpers/mocks');
 
-  var expectedConfigDefaults = {
-    enableGerrit: true
-  };
   var iniFile = {
     gerrit: {
       host: 'review.example.org',
@@ -47,82 +45,114 @@
       projectBuilder.clear();
     });
 
-    it('should define init, prompt, and configure',
-      function () {
-        expect(typeof gerrit.init).toBe('function');
-        expect(typeof gerrit.prompt).toBe('function');
-        expect(typeof gerrit.configure).toBe('function');
-      });
+    afterEach(function() {
+      pkgBuilder.fromJSON(JSON.stringify({}));
+    });
 
-    describe('init()', function () {
-      it('should return a generator',
+    describe('api', function() {
+      it('should define init, prompt, and configure',
+        function() {
+          expect(typeof gerrit.init).toBe('function');
+          expect(typeof gerrit.prompt).toBe('function');
+          expect(typeof gerrit.configure).toBe('function');
+        });
+    });
+
+    describe('runtime', function() {
+      it('should not create a new file if one does not exist already.',
+        function() {
+          // No answers, non-interactive run.
+          var mockAnswers = {};
+          var generator = mocks.buildGenerator(null, mockAnswers);
+          generator.fs.delete('.gitreview');
+
+          gerrit.init(generator);
+          gerrit.prompt(generator);
+          gerrit.configure(generator);
+
+          expect(generator.fs.exists('.gitreview')).toBeFalsy();
+        });
+
+      it('should not delete a file if one exists.',
         function () {
+          // No answers, non-interactive run.
+          var mockAnswers = {};
+          var generator = mocks.buildGenerator(null, mockAnswers);
+          generator.fs.write('.gitreview', ini.stringify(iniFile));
+
+          // Set defaults
+          gerrit.init(generator);
+          gerrit.prompt(generator);
+          gerrit.configure(generator);
+
+          expect(generator.fs.exists('.gitreview')).toBeTruthy();
+        });
+
+      it('should write default values if a new file is requested.',
+        function() {
+          // No answers, non-interactive run.
+          var mockAnswers = {enableGerrit: true};
+          var generator = mocks.buildGenerator(null, mockAnswers);
+          generator.fs.delete('.gitreview');
+
+          // Set defaults
+          gerrit.init(generator);
+          gerrit.prompt(generator);
+          gerrit.configure(generator);
+
+          expectGerritFileContent({
+            gerrit: {
+              host: 'review.openstack.org',
+              port: '29418',
+              project: 'openstack/generator-openstack.git'
+            }
+          });
+        });
+
+      it('should read the default project name from the package builder.',
+        function() {
+          // No answers, non-interactive run.
+          var mockAnswers = {enableGerrit: true};
+          pkgBuilder.fromJSON(JSON.stringify({name: 'foo'}));
+          var generator = mocks.buildGenerator(null, mockAnswers);
+          generator.fs.delete('.gitreview');
+
+          // Set defaults
+          gerrit.init(generator);
+          gerrit.prompt(generator);
+          gerrit.configure(generator);
+
+          expectGerritFileContent({
+            gerrit: {
+              host: 'review.openstack.org',
+              port: '29418',
+              project: 'openstack/foo.git'
+            }
+          });
+        });
+    });
+
+    describe('init()', function() {
+      it('should return a generator',
+        function() {
           var generator = mocks.buildGenerator();
           var outputGenerator = gerrit.init(generator);
           expect(outputGenerator).toEqual(generator);
         });
-
-      it('should set defaults',
-        function () {
-          var generator = mocks.buildGenerator();
-          var spy = spyOn(generator.config, 'defaults');
-          gerrit.init(generator);
-          expect(spy.calls.any()).toBeTruthy();
-          expect(spy.calls.first().args[0]).toEqual(expectedConfigDefaults);
-        });
-
-      it('should revert to defaults if no answers provided',
-        function () {
-          var config = {};
-          var mockAnswers = {};
-          var generator = mocks.buildGenerator(config, mockAnswers);
-
-          // Set defaults
-          gerrit.init(generator);
-
-          // Call the generator
-          gerrit.prompt(generator);
-          expect(config).toEqual(expectedConfigDefaults);
-        });
-
-      it('should read default values from an existing .gitreview file.',
-        function () {
-          var generator = mocks.buildGenerator();
-
-          generator.fs.write('.gitreview', ini.stringify(iniFile));
-          gerrit.init(generator);
-          gerrit.configure(generator);
-
-          expectGerritFileContent(iniFile);
-        });
     });
 
-    describe('prompt()', function () {
+    describe('prompt()', function() {
       it('should return a promise that resovles with a generator',
-        function () {
+        function() {
           var generator = mocks.buildGenerator();
           var outputPromise = gerrit.prompt(generator);
-          outputPromise.then(function (outputGenerator) {
+          outputPromise.then(function(outputGenerator) {
             expect(outputGenerator).toEqual(generator);
           });
         });
 
-      it('should revert to config defaults if no answers provided',
-        function () {
-          var config = {};
-          var mockAnswers = {};
-          var generator = mocks.buildGenerator(config, mockAnswers);
-
-          // Set defaults
-          gerrit.init(generator);
-
-          // Call the generator
-          gerrit.prompt(generator);
-          expect(config).toEqual(expectedConfigDefaults);
-        });
-
       it('should not show a prompt if non-interactive is set',
-        function () {
+        function() {
           var generator = mocks.buildGenerator(null, null,
             {'non-interactive': true});
           var promptSpy = spyOn(generator, 'prompt');
@@ -136,18 +166,19 @@
         });
 
       it('should use defaults in .gitreview if no answers provided',
-        function () {
+        function() {
           var generator = mocks.buildGenerator();
 
           generator.fs.write('.gitreview', ini.stringify(iniFile));
           gerrit.init(generator);
+          gerrit.prompt(generator);
           gerrit.configure(generator);
 
           expectGerritFileContent(iniFile);
         });
 
       it('should configure answers if answers provided',
-        function () {
+        function() {
           var config = {};
           var mockAnswers = {
             enableGerrit: true,
@@ -172,18 +203,17 @@
         });
     });
 
-    describe('configure()', function () {
+    describe('configure()', function() {
       it('should return a generator',
-        function () {
+        function() {
           var generator = mocks.buildGenerator();
           var outputGenerator = gerrit.init(generator);
           expect(outputGenerator).toEqual(generator);
         });
 
       it('should create a .gitreview file if enabled',
-        function () {
-          var mockConfig = {enableGerrit: true};
-          var generator = mocks.buildGenerator(mockConfig);
+        function() {
+          var generator = mocks.buildGenerator(null, {enableGerrit: true});
 
           // Make sure we don't have something left over from another test.
           generator.fs.delete('.gitreview');
@@ -204,9 +234,11 @@
         });
 
       it('should delete a .gitreview file if disabled',
-        function () {
-          var mockConfig = {enableGerrit: false};
-          var generator = mocks.buildGenerator(mockConfig);
+        function() {
+          var generator = mocks.buildGenerator(null, {enableGerrit: false});
+
+          gerrit.init(generator);
+          gerrit.prompt(generator);
           gerrit.configure(generator);
 
           var includedFiles = projectBuilder.getIncludedFiles();

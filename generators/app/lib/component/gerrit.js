@@ -1,7 +1,8 @@
-(function () {
+(function() {
   'use strict';
 
   var projectBuilder = require('../project_builder');
+  var pkgBuilder = require('../pkg_builder');
   var ini = require('ini');
   var Q = require('q');
 
@@ -22,7 +23,7 @@
    * @param {String} answers The collection of answers.
    * @returns {Function} True if enableGerrit is set, otherwise false.
    */
-  var gerritEnabled = function (answers) {
+  var gerritEnabled = function(answers) {
     return !!answers.enableGerrit;
   };
 
@@ -34,9 +35,12 @@
    * @returns {generator} The passed generator, for promise chaining.
    */
   function initializeGerrit (generator) {
+    // Get the project name
+    var projectName = pkgBuilder.getValue("name", generator.appname);
+
     // Define our defaults
     iniContent = JSON.parse(JSON.stringify(iniDefaults));
-    iniContent.gerrit.project = 'openstack/' + generator.appname + '.git';
+    iniContent.gerrit.project = 'openstack/' + projectName + '.git';
 
     // Read the existing file and populate it as defaults.
     if (generator.fs.exists(gerritFile)) {
@@ -84,7 +88,7 @@
           message: 'Gerrit- Project Path:',
           default: iniContent.gerrit.project
         }],
-        function (answers) {
+        function(answers) {
           gerritFileExists = answers.enableGerrit;
           iniContent.gerrit = {
             host: answers.gerritHost,
