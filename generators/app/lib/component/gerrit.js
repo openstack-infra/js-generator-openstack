@@ -64,25 +64,25 @@
         [{
           type: 'confirm',
           name: 'enableGerrit',
-          message: 'Will this project be managed by Gerrit?',
+          message: 'Gerrit- Enable:',
           default: generator.config.get('enableGerrit')
         }, {
           when: gerritEnabled,
           type: 'input',
           name: 'gerritHost',
-          message: 'Gerrit URL:',
+          message: 'Gerrit- Host:',
           default: iniContent.gerrit.host
         }, {
           when: gerritEnabled,
           type: 'input',
           name: 'gerritPort',
-          message: 'Gerrit Port:',
+          message: 'Gerrit- Port:',
           default: iniContent.gerrit.port
         }, {
           when: gerritEnabled,
           type: 'input',
           name: 'gerritProject',
-          message: 'Gerrit Project:',
+          message: 'Gerrit- Project Path:',
           default: iniContent.gerrit.project
         }],
         function (answers) {
