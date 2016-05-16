@@ -1,7 +1,8 @@
-(function () {
+(function() {
   'use strict';
 
   var projectBuilder = require('../project_builder');
+  var pkgBuilder = require('../pkg_builder');
   var ini = require('ini');
   var Q = require('q');
 
@@ -14,6 +15,7 @@
     }
   };
   var iniContent;
+  var gerritFileExists = false;
 
   /**
    * Internal helper method. Returns true if gerrit has been enabled.
@@ -21,7 +23,7 @@
    * @param {String} answers The collection of answers.
    * @returns {Function} True if enableGerrit is set, otherwise false.
    */
-  var gerritEnabled = function (answers) {
+  var gerritEnabled = function(answers) {
     return !!answers.enableGerrit;
   };
 
@@ -33,17 +35,18 @@
    * @returns {generator} The passed generator, for promise chaining.
    */
   function initializeGerrit (generator) {
+    // Get the project name
+    var projectName = pkgBuilder.getValue("name", generator.appname);
+
     // Define our defaults
     iniContent = JSON.parse(JSON.stringify(iniDefaults));
-    iniContent.gerrit.project = 'openstack/' + generator.appname + '.git';
+    iniContent.gerrit.project = 'openstack/' + projectName + '.git';
 
     // Read the existing file and populate it as defaults.
     if (generator.fs.exists(gerritFile)) {
+      gerritFileExists = true;
       iniContent = ini.parse(generator.fs.read(gerritFile));
     }
-
-    // Set the configuration defaults.
-    generator.config.defaults({enableGerrit: true});
 
     return generator;
   }
@@ -65,7 +68,7 @@
           type: 'confirm',
           name: 'enableGerrit',
           message: 'Gerrit- Enable:',
-          default: generator.config.get('enableGerrit')
+          default: gerritFileExists
         }, {
           when: gerritEnabled,
           type: 'input',
@@ -85,11 +88,8 @@
           message: 'Gerrit- Project Path:',
           default: iniContent.gerrit.project
         }],
-        function (answers) {
-          generator.config.set({
-            enableGerrit: answers.enableGerrit
-          });
-
+        function(answers) {
+          gerritFileExists = answers.enableGerrit;
           iniContent.gerrit = {
             host: answers.gerritHost,
             port: answers.gerritPort,
@@ -111,7 +111,7 @@
    * @returns {generator} The passed generator, for promise chaining.
    */
   function configureGerrit (generator) {
-    if (generator.config.get('enableGerrit')) {
+    if (gerritFileExists) {
       projectBuilder.writeFile(gerritFile, buildGerritFile);
     } else {
       projectBuilder.removeFile(gerritFile);

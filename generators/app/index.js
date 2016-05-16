@@ -27,11 +27,6 @@
     initializing: function () {
       var done = this.async();
 
-      // Set our own defaults.
-      this.config.defaults({
-        projectName: this.appname
-      });
-
       // Initialize components.
       Q(this)
         .then(pkg.init)             // Package.json
