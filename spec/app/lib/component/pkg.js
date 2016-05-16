@@ -8,11 +8,18 @@
   var mocks = require('../../../helpers/mocks');
   var mockGenerator;
 
+  var packageFile = {};
+
   describe('generator-openstack:lib/component/pkg', function () {
 
     beforeEach(function () {
       mockGenerator = mocks.buildGenerator();
       projectBuilder.clear();
+      jasmine.clock().install();
+    });
+
+    afterEach(function () {
+      jasmine.clock().uninstall();
     });
 
     it('should define init, prompt, and configure',
@@ -40,17 +47,95 @@
     });
 
     describe('prompt()', function () {
-      it('should return a generator',
+
+      it('should return a promise that resolves with a generator',
         function () {
-          var outputGenerator = pkg.prompt(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
+          var generator = mocks.buildGenerator();
+          var outputPromise = pkg.prompt(generator);
+          outputPromise.then(function (outputGenerator) {
+            expect(outputGenerator).toEqual(generator);
+          });
         });
 
-      it('should do nothing',
+      it('should revert to config defaults if no answers provided',
         function () {
-          var spy = spyOn(mockGenerator, 'prompt');
-          pkg.prompt(mockGenerator);
-          expect(spy.calls.any()).toBeFalsy();
+          var config = {};
+          var mockAnswers = {};
+          var generator = mocks.buildGenerator(config, mockAnswers);
+
+          // Start with a blank package file.
+          generator.fs.write('package.json', JSON.stringify({}));
+
+          // Set defaults
+          pkg.init(generator);
+          pkg.configure(generator);
+          pkg.prompt(generator);
+
+          // Call the generator
+          expect(pkgBuilder.getValues()).toEqual({
+            name: null,
+            description: null,
+            version: '0.0.1',
+            homepage: 'http://www.openstack.org/',
+            author: 'OpenStack <openstack-dev@lists.openstack.org> (http://www.openstack.org/)'
+          });
+        });
+
+      it('should not show a prompt if non-interactive is set',
+        function () {
+          var generator = mocks.buildGenerator(null, null,
+            {'non-interactive': true});
+          var promptSpy = spyOn(generator, 'prompt');
+
+          generator.fs.write('package.json', JSON.stringify(packageFile));
+
+          pkg.init(generator);
+          pkg.prompt(generator);
+
+          expect(promptSpy.calls.any()).toBeFalsy();
+        });
+
+      it('should use defaults in package.json if no answers provided',
+        function () {
+          var generator = mocks.buildGenerator();
+
+          var mockPackage = {
+            name: 'name',
+            description: 'description',
+            version: '0.0.1',
+            homepage: 'http://www.openstack.org/',
+            author: 'OpenStack <openstack-dev@lists.openstack.org> (http://www.openstack.org/)'
+          };
+          generator.fs.write('package.json', JSON.stringify(mockPackage));
+
+          pkg.init(generator);
+          pkg.configure(generator);
+          pkg.prompt(generator);
+
+          expect(pkgBuilder.getValues()).toEqual(mockPackage);
+        });
+
+      it('should configure answers if answers provided',
+        function () {
+          var config = {};
+          var mockAnswers = {
+            name: 'name',
+            description: 'description',
+            version: '1.0.0',
+            homepage: 'http://example.openstack.org/',
+            author: 'Example Author'
+          };
+          var generator = mocks.buildGenerator(config, mockAnswers);
+
+          // Start with a blank package file.
+          generator.fs.write('package.json', JSON.stringify({}));
+
+          // Set defaults
+          pkg.init(generator);
+          pkg.prompt(generator);
+          pkg.configure(generator);
+
+          expect(pkgBuilder.getValues()).toEqual(mockAnswers);
         });
     });
 
