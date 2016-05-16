@@ -19,6 +19,9 @@
 
       // Add support for a `--non-interactive` flag
       this.option('non-interactive');
+
+      // If non-interactive is set, force-override all files.
+      this.conflicter.force = this.options['non-interactive'];
     },
 
     initializing: function () {
