@@ -72,6 +72,13 @@
           builder.fromJSON('{"name":"foo"}');
           expect(builder.getValue('invalidname')).toBeUndefined();
         });
+
+      it('should return a default if provided.',
+        function () {
+          builder.fromJSON('{"name":"foo"}');
+          expect(builder.getValue('invalidname', 'defaultValue'))
+            .toBe('defaultValue');
+        });
     });
   });
 })();
