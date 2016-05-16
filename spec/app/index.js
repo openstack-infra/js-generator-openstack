@@ -53,7 +53,7 @@
           helpers.run(generator)
             .withArguments(['--non-interactive'])
             .on('end', function() {
-              assert.file(['.gitreview']); // We'll just use a file we know about.
+              assert.file(['package.json']);
               done();
             });
         });
