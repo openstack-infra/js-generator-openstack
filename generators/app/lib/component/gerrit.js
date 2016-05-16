@@ -14,6 +14,7 @@
     }
   };
   var iniContent;
+  var gerritFileExists = false;
 
   /**
    * Internal helper method. Returns true if gerrit has been enabled.
@@ -39,11 +40,9 @@
 
     // Read the existing file and populate it as defaults.
     if (generator.fs.exists(gerritFile)) {
+      gerritFileExists = true;
       iniContent = ini.parse(generator.fs.read(gerritFile));
     }
-
-    // Set the configuration defaults.
-    generator.config.defaults({enableGerrit: true});
 
     return generator;
   }
@@ -65,7 +64,7 @@
           type: 'confirm',
           name: 'enableGerrit',
           message: 'Gerrit- Enable:',
-          default: generator.config.get('enableGerrit')
+          default: gerritFileExists
         }, {
           when: gerritEnabled,
           type: 'input',
@@ -86,10 +85,7 @@
           default: iniContent.gerrit.project
         }],
         function (answers) {
-          generator.config.set({
-            enableGerrit: answers.enableGerrit
-          });
-
+          gerritFileExists = answers.enableGerrit;
           iniContent.gerrit = {
             host: answers.gerritHost,
             port: answers.gerritPort,
@@ -111,7 +107,7 @@
    * @returns {generator} The passed generator, for promise chaining.
    */
   function configureGerrit (generator) {
-    if (generator.config.get('enableGerrit')) {
+    if (gerritFileExists) {
       projectBuilder.writeFile(gerritFile, buildGerritFile);
     } else {
       projectBuilder.removeFile(gerritFile);
