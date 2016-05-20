@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   var projectBuilder = require('../project_builder');
@@ -33,7 +33,7 @@
     if (fs.exists(ignoreFile)) {
       excludedPaths = fs.read(ignoreFile)
         .split('\n')
-        .filter(function(item) {
+        .filter(function (item) {
           // Remove empty lines.
           return item.length > 0;
         });

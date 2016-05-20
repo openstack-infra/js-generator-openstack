@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   var yeoman = require('yeoman-generator');
@@ -14,14 +14,14 @@
 
   module.exports = yeoman.Base.extend({
 
-    constructor: function() {
+    constructor: function () {
       yeoman.Base.apply(this, arguments);
 
       // Add support for a `--non-interactive` flag
       this.option('non-interactive');
     },
 
-    initializing: function() {
+    initializing: function () {
       var done = this.async();
 
       // Set our own defaults.
@@ -37,12 +37,12 @@
         .then(license.init)         // Licensing
         .then(eslint.init)          // Linting
         .then(gitignore.init)       // Gitignore
-        .then(function() {
+        .then(function () {
           done();
         });
     },
 
-    prompting: function() {
+    prompting: function () {
       var done = this.async();
 
       // Prompt components.
@@ -53,12 +53,12 @@
         .then(license.prompt)         // Licensing
         .then(eslint.prompt)          // Linting
         .then(gitignore.prompt)       // Gitignore
-        .then(function() {
+        .then(function () {
           done();
         });
     },
 
-    configuring: function() {
+    configuring: function () {
       var done = this.async();
 
       // Configure components.
@@ -69,19 +69,19 @@
         .then(license.configure)         // Licensing
         .then(eslint.configure)          // Linting
         .then(gitignore.configure)       // Gitignore
-        .then(function() {
+        .then(function () {
           done();
         });
     },
 
-    writing: function() {
+    writing: function () {
       var self = this;
       var config = self.config.getAll();
       var included = projectBuilder.getIncludedFiles();
       var excluded = projectBuilder.getExcludedFiles();
 
       // Write out all files included in the project builder.
-      included.forEach(function(fileRef) {
+      included.forEach(function (fileRef) {
         if (fileRef.hasOwnProperty('content')) {
           var content = typeof fileRef.content === 'function'
             ? "" + fileRef.content()
@@ -97,7 +97,7 @@
       });
 
       // Delete all files explicitly excluded in the project builder.
-      excluded.forEach(function(path) {
+      excluded.forEach(function (path) {
         self.fs.delete(self.destinationPath(path));
       });
     }

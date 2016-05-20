@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
   var libDir = '../../../../generators/app/lib';
 
@@ -8,59 +8,59 @@
   var mocks = require('../../../helpers/mocks');
   var mockGenerator;
 
-  describe('generator-openstack:lib/component/license', function() {
+  describe('generator-openstack:lib/component/license', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       mockGenerator = mocks.buildGenerator();
       projectBuilder.clear();
     });
 
     it('should define init, prompt, and configure',
-      function() {
+      function () {
         expect(typeof license.init).toBe('function');
         expect(typeof license.prompt).toBe('function');
         expect(typeof license.configure).toBe('function');
       });
 
-    describe('init()', function() {
+    describe('init()', function () {
       it('should return a generator',
-        function() {
+        function () {
           var outputGenerator = license.init(mockGenerator);
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
       it('should do nothing',
-        function() {
+        function () {
           var spy = spyOn(mockGenerator.config, 'defaults');
           license.init(mockGenerator);
           expect(spy.calls.any()).toBeFalsy();
         });
     });
 
-    describe('prompt()', function() {
+    describe('prompt()', function () {
       it('should return a generator',
-        function() {
+        function () {
           var outputGenerator = license.prompt(mockGenerator);
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
       it('should do nothing',
-        function() {
+        function () {
           var spy = spyOn(mockGenerator, 'prompt');
           license.prompt(mockGenerator);
           expect(spy.calls.any()).toBeFalsy();
         });
     });
 
-    describe('configure()', function() {
+    describe('configure()', function () {
       it('should return a generator',
-        function() {
+        function () {
           var outputGenerator = license.configure(mockGenerator);
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
       it('should add license to the project files.',
-        function() {
+        function () {
           license.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -70,7 +70,7 @@
         });
 
       it('should add license to the package.json files.',
-        function() {
+        function () {
           license.configure(mockGenerator);
 
           var parsedResult = JSON.parse(pkgBuilder.toJSON());
