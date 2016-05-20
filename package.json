@@ -40,5 +40,5 @@
     "yeoman-assert": "^2.1.2",
     "yeoman-test": "^1.1.0"
   },
-  "repository": "https://github.com/krotscheck/generator-openstack"
+  "repository": "git://git.openstack.org/openstack-infra/js-generator-openstack"
 }
