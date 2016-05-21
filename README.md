@@ -38,6 +38,7 @@ This should set up your project directory and make it ready for development.
 * `npm run lint` - Perform a linting check.
 
 ## TODO List
+
 Looking for something to add? Here's a quick checklist:
 
 * Prompt user for the project name, and make it accessible to all submodules.
@@ -51,6 +52,10 @@ Looking for something to add? Here's a quick checklist:
 ## Project Resources
 
   - [Source code](https://git.openstack.org/cgit/openstack/js-generator-openstack)
+	- [Code review](https://review.openstack.org/#/admin/projects/openstack-infra/js-generator-openstack)
+	- [Story board](https://storyboard.openstack.org/#!/project/842)
+
+## Workflow
+
   - [How to contribute to OpenStack](http://docs.openstack.org/infra/manual/developers.html)
   - [Code reviews workflow](http://docs.openstack.org/infra/manual/developers.html#development-workflow)
-
