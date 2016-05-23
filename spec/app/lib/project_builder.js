@@ -47,5 +47,12 @@
         builder.removeFile(testFilePath);
         expect(builder.getExcludedFiles()[0]).toBe(testFilePath);
       });
+
+    it('should permit adding a file to the ignore list',
+      function () {
+        var testFilePath = 'test_path.json';
+        builder.ignoreFile(testFilePath);
+        expect(builder.getIgnoredFiles()[0]).toBe(testFilePath);
+      });
   });
 })();
