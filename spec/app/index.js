@@ -38,6 +38,7 @@
       it('should create all files created in the project builder',
         function (done) {
           helpers.run(generator)
+            .withArguments(['--non-interactive'])
             .on('end', function () {
               assert.file(['.gitreview']); // We'll just use a file we know about.
               done();
@@ -59,6 +60,7 @@
           projectBuilder.writeFile('test_undefined.json');
 
           helpers.run(generator)
+            .withArguments(['--non-interactive'])
             .on('end', function () {
               assert.file(['test.json', 'test_static.json', 'test_empty.json', 'test_null.json',
                 'test_undefined.json']);
@@ -71,6 +73,7 @@
           projectBuilder.removeFile('test.json');
 
           helpers.run(generator)
+            .withArguments(['--non-interactive'])
             .on('end', function () {
               assert.noFile(['test.json']);
               done();
