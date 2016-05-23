@@ -1,10 +1,10 @@
-(function() {
+(function () {
   'use strict';
 
   var projectBuilder = require('../project_builder');
   var yaml = require('js-yaml');
 
-  var excludedPaths = [];
+  var excludedPaths = {};
   var ignoreFile = '.eslintignore';
   var rcFile = '.eslintrc';
   var eslintrc = {extends: 'openstack'};
@@ -29,14 +29,21 @@
   function initializeEslint (generator) {
     var fs = generator.fs;
 
+    // Re-initialize excluded paths.
+    excludedPaths = {};
+
     // Read .eslintignore.
     if (fs.exists(ignoreFile)) {
-      excludedPaths = fs.read(ignoreFile)
+      var paths = fs.read(ignoreFile)
         .split('\n')
-        .filter(function(item) {
+        .filter(function (item) {
           // Remove empty lines.
           return item.length > 0;
         });
+
+      for (var i = 0; i < paths.length; i++) {
+        excludedPaths[paths[i]] = true;
+      }
     }
 
     // Read .eslintrc
@@ -65,12 +72,20 @@
   }
 
   /**
-   * Generate the content of our .eslintignore file from the configured list of excluded paths.
+   * Generate the content of our .eslintignore file from the configured list of excluded paths,
+   * as well as any project-level configured ignoreFiles.
    *
    * @returns {string} The content of the .eslintignore file.
    */
   function buildEslintIgnore () {
-    return excludedPaths.sort().join('\n');
+    var ignoredFiles = projectBuilder.getIgnoredFiles();
+    for (var i = 0; i < ignoredFiles.length; i++) {
+      if (!excludedPaths.hasOwnProperty(ignoredFiles[i])) {
+        excludedPaths[ignoredFiles[i]] = true;
+      }
+    }
+
+    return Object.keys(excludedPaths).sort().join('\n');
   }
 
   /**
