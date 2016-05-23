@@ -29,14 +29,21 @@
   function initializeEslint (generator) {
     var fs = generator.fs;
 
+    // Re-initialize excluded paths.
+    excludedPaths = [];
+
     // Read .eslintignore.
     if (fs.exists(ignoreFile)) {
-      excludedPaths = fs.read(ignoreFile)
+      var paths = fs.read(ignoreFile)
         .split('\n')
         .filter(function (item) {
           // Remove empty lines.
           return item.length > 0;
         });
+
+      paths.forEach(function (item) {
+        excludedPaths.push(item);
+      });
     }
 
     // Read .eslintrc
@@ -65,11 +72,19 @@
   }
 
   /**
-   * Generate the content of our .eslintignore file from the configured list of excluded paths.
+   * Generate the content of our .eslintignore file from the configured list of excluded paths,
+   * as well as any project-level configured ignoreFiles.
    *
    * @returns {string} The content of the .eslintignore file.
    */
   function buildEslintIgnore () {
+    var ignoredFiles = projectBuilder.getIgnoredFiles();
+    ignoredFiles.forEach(function (item) {
+      if (excludedPaths.indexOf(item) === -1) {
+        excludedPaths.push(item);
+      }
+    });
+
     return excludedPaths.sort().join('\n');
   }
 
