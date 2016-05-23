@@ -44,6 +44,17 @@
           var output = JSON.parse(pkgBuilder.toJSON());
           expect(output.name).toBe('foo');
         });
+
+      it('should add several files to the ignore list.',
+        function () {
+          pkg.init(mockGenerator);
+
+          var ignoredFiles = projectBuilder.getIgnoredFiles();
+          expect(ignoredFiles.indexOf('node_modules')).not.toBe(-1);
+          expect(ignoredFiles.indexOf('npm-debug.log')).not.toBe(-1);
+          expect(ignoredFiles.indexOf('package')).not.toBe(-1);
+          expect(ignoredFiles.indexOf('.npm')).not.toBe(-1);
+        });
     });
 
     describe('prompt()', function () {
