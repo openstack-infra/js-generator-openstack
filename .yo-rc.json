@@ -1,6 +1,0 @@
-{
-  "generator-openstack": {
-    "enableGerrit": true,
-    "projectName": "generator-openstack"
-  }
-}
