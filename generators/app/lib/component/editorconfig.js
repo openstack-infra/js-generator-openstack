@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
 
   var projectBuilder = require('../project_builder');
