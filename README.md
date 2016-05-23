@@ -45,7 +45,7 @@ Looking for something to add? Please check [StoryBoard](https://storyboard.opens
 
   - [Source code](https://git.openstack.org/cgit/openstack/js-generator-openstack)
   - [Code review](https://review.openstack.org/#/admin/projects/openstack-infra/js-generator-openstack)
-  - [Story board](https://storyboard.openstack.org/#!/project/842)
+  - [Task Tracking (StoryBoard)](https://storyboard.openstack.org/#!/project/842)
 
 ## Workflow
 
