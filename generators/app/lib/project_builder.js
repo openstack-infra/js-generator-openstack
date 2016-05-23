@@ -3,6 +3,7 @@
 
   var includedFiles = [];
   var excludedFiles = [];
+  var ignoredFiles = [];
 
   /**
    * Ensure that a file is removed, or not present, in the project.
@@ -12,6 +13,20 @@
    */
   function removeFile (destinationPath) {
     excludedFiles.push(destinationPath);
+  }
+
+  /**
+   * Flag a file path as 'ignored'.
+   *
+   * This does not have a real impact on which files are created/removed from the bootstrapped
+   * project, however it does permit other modules to retrieve this list and modify their
+   * behavior accordingly. For example, eslint could use this to generate .eslintignore
+   *
+   * @param {String} destinationPath Path to the file, relative to output root.
+   * @returns {void}
+   */
+  function ignoreFile (destinationPath) {
+    ignoredFiles.push(destinationPath);
   }
 
   /**
@@ -55,6 +70,15 @@
   }
 
   /**
+   * Get a list of all file paths that should be ignored.
+   *
+   * @returns {Array} A list of file paths.
+   */
+  function getIgnoredFiles () {
+    return ignoredFiles;
+  }
+
+  /**
    * Clear the current configuration.
    *
    * @returns {void}
@@ -62,13 +86,16 @@
   function clearAll () {
     includedFiles = [];
     excludedFiles = [];
+    ignoredFiles = [];
   }
 
   module.exports = {
     addFile: addFile,
     writeFile: writeFile,
     removeFile: removeFile,
+    ignoreFile: ignoreFile,
     getIncludedFiles: getIncludedFiles,
+    getIgnoredFiles: getIgnoredFiles,
     getExcludedFiles: getExcludedFiles,
     clear: clearAll
   };
