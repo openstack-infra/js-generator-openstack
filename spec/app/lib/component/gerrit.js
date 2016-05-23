@@ -98,11 +98,13 @@
     });
 
     describe('prompt()', function () {
-      it('should return a generator',
+      it('should return a promise that resolves with a generator',
         function () {
           var generator = mocks.buildGenerator();
-          var outputGenerator = gerrit.init(generator);
-          expect(outputGenerator).toEqual(generator);
+          var outputPromise = gerrit.prompt(generator);
+          outputPromise.then(function (outputGenerator) {
+            expect(outputGenerator).toEqual(generator);
+          });
         });
 
       it('should revert to config defaults if no answers provided',
