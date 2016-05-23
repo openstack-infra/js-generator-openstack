@@ -1,6 +1,7 @@
 (function () {
   'use strict';
   var builder = require('../../../generators/app/lib/pkg_builder');
+  var dependencies = require('../../../generators/app/lib/global_dependencies');
 
   describe('generator-openstack:lib/pkg_builder', function () {
 
@@ -51,6 +52,42 @@
         expect(parsedResult.lol).toBe("cat");
         expect(parsedResult.foo).toBeUndefined();
       });
+
+    describe('toJSON()', function () {
+      it('should update out-of-date dependencies.',
+        function () {
+          var testPackage = {
+            dependencies: {
+              eslint: "0.0.1"
+            },
+            peerDependencies: {
+              eslint: "0.0.1"
+            },
+            devDependencies: {
+              eslint: "0.0.1"
+            }
+          };
+
+          builder.fromJSON(JSON.stringify(testPackage));
+          var result = JSON.parse(builder.toJSON());
+          expect(result.dependencies.eslint).toBe(dependencies.read('eslint'));
+          expect(result.peerDependencies.eslint).toBe(dependencies.read('eslint'));
+          expect(result.devDependencies.eslint).toBe(dependencies.read('eslint'));
+        });
+
+      it('should not error if no dependencies are declared.',
+        function () {
+          var testPackage = {
+            dependencies: {
+              eslint: "0.0.1"
+            }
+          };
+
+          builder.fromJSON(JSON.stringify(testPackage));
+          var result = JSON.parse(builder.toJSON());
+          expect(result.dependencies.eslint).toBe(dependencies.read('eslint'));
+        });
+    });
 
     describe('getValues()', function () {
       it('should permit retrieving the entire package block.',
