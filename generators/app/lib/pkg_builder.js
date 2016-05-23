@@ -47,16 +47,18 @@
   }
 
   /**
-   * Get a specific value from the package.json file.
+   * Get a specific value from the package.json file, or a default if the
+   * value is not set.
    *
    * @param {String} name The name of the value.
+   * @param {String} defaultValue A default value to return.
    * @returns {{}} A clone of the referenced value.
    */
-  function getValue (name) {
+  function getValue (name, defaultValue) {
     if (pkgContent.hasOwnProperty(name)) {
       return JSON.parse(JSON.stringify(pkgContent[name]));
     }
-    return undefined;
+    return defaultValue || undefined;
   }
 
   module.exports = {
