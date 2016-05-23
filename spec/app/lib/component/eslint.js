@@ -1,4 +1,4 @@
-(function() {
+(function () {
   'use strict';
   var libDir = '../../../../generators/app/lib';
   var mockGenerator;
@@ -9,22 +9,22 @@
   var mocks = require('../../../helpers/mocks');
   var yaml = require('js-yaml');
 
-  describe('generator-openstack:lib/component/eslint', function() {
+  describe('generator-openstack:lib/component/eslint', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       mockGenerator = mocks.buildGenerator();
       mockGenerator.fs.write('.eslintignore', mockEslintIgnore.join('\n'));
       projectBuilder.clear();
     });
 
     it('should define init, prompt, and configure',
-      function() {
+      function () {
         expect(typeof eslint.init).toBe('function');
         expect(typeof eslint.prompt).toBe('function');
         expect(typeof eslint.configure).toBe('function');
       });
 
-    describe('init()', function() {
+    describe('init()', function () {
       it('should return a generator',
         function () {
           var outputGenerator = eslint.init(mockGenerator);
@@ -32,14 +32,14 @@
         });
 
       it('should not interact with config',
-        function() {
+        function () {
           var spy = spyOn(mockGenerator.config, 'defaults');
           eslint.init(mockGenerator);
           expect(spy.calls.any()).toBeFalsy();
         });
     });
 
-    describe('prompt()', function() {
+    describe('prompt()', function () {
       it('should return a generator',
         function () {
           var outputGenerator = eslint.prompt(mockGenerator);
@@ -47,14 +47,14 @@
         });
 
       it('should do nothing',
-        function() {
+        function () {
           var spy = spyOn(mockGenerator, 'prompt');
           eslint.prompt(mockGenerator);
           expect(spy.calls.any()).toBeFalsy();
         });
     });
 
-    describe('configure()', function() {
+    describe('configure()', function () {
       it('should return a generator',
         function () {
           var outputGenerator = eslint.configure(mockGenerator);
@@ -62,7 +62,7 @@
         });
 
       it('should add .eslintrc and .eslintignore to the project files.',
-        function() {
+        function () {
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -72,14 +72,14 @@
         });
     });
 
-    describe('.eslintrc management', function() {
+    describe('.eslintrc management', function () {
       var mockEslintRc = {
         extends: 'openstack',
         plugins: ['angular']
       };
 
       it('should write a .eslintrc file as valid .yaml',
-        function() {
+        function () {
           eslint.init(mockGenerator);
           eslint.configure(mockGenerator);
 
@@ -91,7 +91,7 @@
         });
 
       it('should echo back existing .eslintrc',
-        function() {
+        function () {
           var yamlContent = yaml.safeDump(mockEslintRc);
           mockGenerator.fs.write('.eslintrc', yamlContent);
 
@@ -105,7 +105,7 @@
         });
 
       it('should convert a json .eslintrc to yaml',
-        function() {
+        function () {
           mockGenerator.fs.write('.eslintrc', JSON.stringify(mockEslintRc));
 
           eslint.init(mockGenerator);
@@ -118,13 +118,14 @@
         });
     });
 
-    describe('.eslintignore management', function() {
+    describe('.eslintignore management', function () {
 
       it('should echo back existing .eslintignore',
-        function() {
+        function () {
           mockGenerator.fs.write('.eslintignore', mockEslintIgnore.join('\n'));
 
           eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -132,16 +133,52 @@
           var ignoreContent = ignoreRef.content().split('\n');
           expect(ignoreContent.length).toBe(mockEslintIgnore.length);
 
-          ignoreContent.forEach(function(item) {
+          ignoreContent.forEach(function (item) {
             expect(mockEslintIgnore.indexOf(item)).not.toBe(-1);
           });
         });
 
+      it('should include any files flagged as ignored in the project builder.',
+        function () {
+          mockGenerator.fs.write('.eslintignore', '');
+          projectBuilder.ignoreFile('foo/bar.json');
+
+          eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
+          eslint.configure(mockGenerator);
+
+          var files = projectBuilder.getIncludedFiles();
+          var ignoreRef = files[0]; // There should only be one file.
+          var ignoreContent = ignoreRef.content().split('\n');
+          expect(ignoreContent.length).toBe(1);
+
+          expect(ignoreContent[0]).toBe('foo/bar.json');
+        });
+
+      it('should de-duplicate file paths from multiple locations.',
+        function () {
+          // include 'node_modules' from both an existing file and from the project builder.
+          mockGenerator.fs.write('.eslintignore', ['node_modules'].join('\n'));
+          projectBuilder.ignoreFile('node_modules');
+
+          eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
+          eslint.configure(mockGenerator);
+
+          var files = projectBuilder.getIncludedFiles();
+          var ignoreRef = files[0]; // There should only be one file.
+          var ignoreContent = ignoreRef.content().split('\n');
+          expect(ignoreContent.length).toBe(1);
+
+          expect(ignoreContent[0]).toBe('node_modules');
+        });
+
       it('should sort the ignored files.',
-        function() {
+        function () {
           mockGenerator.fs.write('.eslintignore', mockEslintIgnore.join('\n'));
 
           eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -153,10 +190,11 @@
         });
 
       it('should remove any whitespace from the existing .eslintignore',
-        function() {
+        function () {
           mockGenerator.fs.write('.eslintignore', ['1_one', '', '2_two', ''].join('\n'));
 
           eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -167,10 +205,11 @@
           expect(ignoreContent[1]).toBe('2_two');
         });
 
-      it('should delete the file if there\'s nothing to ignore', function() {
+      it('should delete the file if there\'s nothing to ignore', function () {
         mockGenerator.fs.write('.eslintignore', '');
 
         eslint.init(mockGenerator);
+        eslint.prompt(mockGenerator);
         eslint.configure(mockGenerator);
 
         var files = projectBuilder.getIncludedFiles();
