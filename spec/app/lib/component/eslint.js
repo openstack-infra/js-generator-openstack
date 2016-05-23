@@ -125,6 +125,7 @@
           mockGenerator.fs.write('.eslintignore', mockEslintIgnore.join('\n'));
 
           eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -137,11 +138,47 @@
           });
         });
 
+      it('should include any files flagged as ignored in the project builder.',
+        function () {
+          mockGenerator.fs.write('.eslintignore', '');
+          projectBuilder.ignoreFile('foo/bar.json');
+
+          eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
+          eslint.configure(mockGenerator);
+
+          var files = projectBuilder.getIncludedFiles();
+          var ignoreRef = files[0]; // There should only be one file.
+          var ignoreContent = ignoreRef.content().split('\n');
+          expect(ignoreContent.length).toBe(1);
+
+          expect(ignoreContent[0]).toBe('foo/bar.json');
+        });
+
+      it('should de-duplicate file paths from multiple locations.',
+        function () {
+          // include 'node_modules' from both an existing file and from the project builder.
+          mockGenerator.fs.write('.eslintignore', ['node_modules'].join('\n'));
+          projectBuilder.ignoreFile('node_modules');
+
+          eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
+          eslint.configure(mockGenerator);
+
+          var files = projectBuilder.getIncludedFiles();
+          var ignoreRef = files[0]; // There should only be one file.
+          var ignoreContent = ignoreRef.content().split('\n');
+          expect(ignoreContent.length).toBe(1);
+
+          expect(ignoreContent[0]).toBe('node_modules');
+        });
+
       it('should sort the ignored files.',
         function () {
           mockGenerator.fs.write('.eslintignore', mockEslintIgnore.join('\n'));
 
           eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -157,6 +194,7 @@
           mockGenerator.fs.write('.eslintignore', ['1_one', '', '2_two', ''].join('\n'));
 
           eslint.init(mockGenerator);
+          eslint.prompt(mockGenerator);
           eslint.configure(mockGenerator);
 
           var files = projectBuilder.getIncludedFiles();
@@ -171,6 +209,7 @@
         mockGenerator.fs.write('.eslintignore', '');
 
         eslint.init(mockGenerator);
+        eslint.prompt(mockGenerator);
         eslint.configure(mockGenerator);
 
         var files = projectBuilder.getIncludedFiles();
