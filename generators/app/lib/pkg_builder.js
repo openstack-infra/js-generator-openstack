@@ -1,7 +1,25 @@
 (function () {
   'use strict';
 
+  var dependencies = require('./global_dependencies');
   var pkgContent = {};
+
+  /**
+   * Convert a package.json formatted list of dependencies and update them to the versions
+   * listed in our global dependencies.
+   *
+   * @param {{}} dependencyMap The map of dependencies.
+   * @returns {{}} A clone of the map, updated with current common versions.
+   */
+  function synchronizeDependencies (dependencyMap) {
+    if (!dependencyMap) {
+      return undefined;
+    }
+
+    // Clone.
+    dependencyMap = JSON.parse(JSON.stringify(dependencyMap));
+    return dependencies.synchronize(dependencyMap);
+  }
 
   /**
    * Initialize this builder from a JSON string.
@@ -19,7 +37,14 @@
    * @returns {String} The JSON content of the package, as a string.
    */
   function writePackage () {
-    return JSON.stringify(pkgContent, null, 2);
+    // Clone the package content so we don't destroy what's in memory...
+    var newContent = JSON.parse(JSON.stringify(pkgContent));
+
+    // Synchronize all the dependencies.
+    newContent.peerDependencies = synchronizeDependencies(newContent.peerDependencies);
+    newContent.dependencies = synchronizeDependencies(newContent.dependencies);
+    newContent.devDependencies = synchronizeDependencies(newContent.devDependencies);
+    return JSON.stringify(newContent, null, 2);
   }
 
   /**
