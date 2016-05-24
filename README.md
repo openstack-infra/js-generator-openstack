@@ -1,6 +1,6 @@
-# generator-openstack
+# js-generator-openstack
 
-generator-openstack is OpenStack's JavaScript project templating and maintenance engine. It permits you to:
+`js-generator-openstack` is OpenStack's JavaScript project templating and maintenance engine. It permits you to:
 
 1. ...create a new OpenStack JavaScript project.
 2. ...update an existing project with new settings, requirements, and tools.
@@ -51,11 +51,17 @@ Looking for something to add? Here's a quick checklist:
 
 ## Project Resources
 
-  - [Source code](https://git.openstack.org/cgit/openstack/js-generator-openstack)
-  - [Code review](https://review.openstack.org/#/admin/projects/openstack-infra/js-generator-openstack)
-  - [Storyboard](https://storyboard.openstack.org/#!/project/842)
+- [Source code](https://git.openstack.org/cgit/openstack/js-generator-openstack)
+- [Code review](https://review.openstack.org/#/admin/projects/openstack-infra/js-generator-openstack)
+- [Storyboard](https://storyboard.openstack.org/#!/project/842)
+- [Mailing list](http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-dev) with tag `[javascript]`
+- IRC: `#openstack-javascript` on freenode.net
 
 ## Workflow
 
-  - [How to contribute to OpenStack](http://docs.openstack.org/infra/manual/developers.html)
-  - [Code reviews workflow](http://docs.openstack.org/infra/manual/developers.html#development-workflow)
+- [How to contribute to OpenStack](http://docs.openstack.org/infra/manual/developers.html)
+- [Code reviews workflow](http://docs.openstack.org/infra/manual/developers.html#development-workflow)
+
+## How to join
+
+Check http://lists.openstack.org/pipermail/openstack-dev/2016-May/095354.html and reply
