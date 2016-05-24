@@ -39,21 +39,13 @@ This should set up your project directory and make it ready for development.
 
 ## TODO List
 
-Looking for something to add? Here's a quick checklist:
-
-* Prompt user for the project name, and make it accessible to all submodules.
-* Choose the type of project they'd like to generate: Library, Web UI, or CLI Node App
-  * Basic project setup for these different types will also be needed.
-* package.json creation and maintenance
-* Ensure that license is persisted into package.json
-* dependency propagation from global requirements
-* CLI documentation for `--non-interactive`
+Looking for something to add? Please check [StoryBoard](https://storyboard.openstack.org/#!/project/842)
 
 ## Project Resources
 
   - [Source code](https://git.openstack.org/cgit/openstack/js-generator-openstack)
   - [Code review](https://review.openstack.org/#/admin/projects/openstack-infra/js-generator-openstack)
-  - [Storyboard](https://storyboard.openstack.org/#!/project/842)
+  - [Story board](https://storyboard.openstack.org/#!/project/842)
 
 ## Workflow
 
