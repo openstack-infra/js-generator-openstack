@@ -48,6 +48,41 @@
   }
 
   /**
+   * Add libraries to the package dependencies.
+   *
+   * @param {[]|String} libraryNames A list of all libraries to add to the dependencies.
+   * @param {String} type The type of dependency.
+   * @returns {void}
+   */
+  function addDependencies (libraryNames, type) {
+    // Default the type.
+    type = type || 'dependencies';
+
+    // Valuecheck type.
+    if (['devDependencies', 'peerDependencies', 'dependencies'].indexOf(type) === -1) {
+      return;
+    }
+
+    // Default the array.
+    if (!Array.isArray(libraryNames)) {
+      libraryNames = [libraryNames];
+    }
+
+    // Make sure the property exists.
+    if (!pkgContent.hasOwnProperty(type)) {
+      pkgContent[type] = {};
+    }
+
+    // Add the dependency
+    libraryNames.forEach(function (library) {
+      var version = dependencies.read(library);
+      if (version && !pkgContent[type].hasOwnProperty(library)) {
+        pkgContent[type][library] = version;
+      }
+    });
+  }
+
+  /**
    * Set values on the current package.
    *
    * @param {{}} values A map of values.
@@ -91,6 +126,7 @@
     toJSON: writePackage,
     setValues: setValues,
     getValues: getValues,
-    getValue: getValue
+    getValue: getValue,
+    addDependencies: addDependencies
   };
 })();
