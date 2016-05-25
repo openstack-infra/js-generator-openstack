@@ -1,6 +1,7 @@
 (function () {
   'use strict';
 
+  var pkgBuilder = require('../pkg_builder');
   var projectBuilder = require('../project_builder');
   var yaml = require('js-yaml');
 
@@ -10,12 +11,17 @@
   var eslintrc = {extends: 'openstack'};
 
   /**
-   * No-op placeholder method, for handlers we don't need.
+   * This method configures the package builder with all options necessary to support eslint.
    *
    * @param {generator} generator The currently active generator.
    * @returns {generator} The passed generator, for promise chaining.
    */
-  function noop (generator) {
+  function promptEslint (generator) {
+    // At this time, we don't actually need to prompt the user.
+
+    // Add the dependencies.
+    pkgBuilder.addDependencies(['eslint', 'eslint-config-openstack'], 'devDependencies');
+
     return generator;
   }
 
@@ -99,7 +105,7 @@
 
   module.exports = {
     init: initializeEslint,
-    prompt: noop,
+    prompt: promptEslint,
     configure: configureEslint
   };
 })();
