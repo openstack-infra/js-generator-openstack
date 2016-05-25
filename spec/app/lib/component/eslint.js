@@ -5,6 +5,7 @@
   var mockEslintIgnore = ['node_modules', 'bower_components', 'dist'];
 
   var eslint = require(libDir + '/component/eslint');
+  var pkgBuilder = require(libDir + '/pkg_builder');
   var projectBuilder = require(libDir + '/project_builder');
   var mocks = require('../../../helpers/mocks');
   var yaml = require('js-yaml');
@@ -46,11 +47,19 @@
           expect(outputGenerator).toEqual(mockGenerator);
         });
 
-      it('should do nothing',
+      it('should add eslint and eslint-config-openstack to the project',
         function () {
-          var spy = spyOn(mockGenerator, 'prompt');
+          pkgBuilder.fromJSON('{"devDependencies":{}}');
+
+          var devDeps = pkgBuilder.getValue('devDependencies');
+          expect(devDeps.eslint).not.toBeDefined();
+          expect(devDeps['eslint-config-openstack']).not.toBeDefined();
+
           eslint.prompt(mockGenerator);
-          expect(spy.calls.any()).toBeFalsy();
+
+          devDeps = pkgBuilder.getValue('devDependencies');
+          expect(devDeps.eslint).toBeDefined();
+          expect(devDeps['eslint-config-openstack']).toBeDefined();
         });
     });
 
