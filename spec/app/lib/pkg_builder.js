@@ -117,5 +117,75 @@
             .toBe('defaultValue');
         });
     });
+
+    describe('addDependencies()', function () {
+      var eslintVersion = dependencies.read('eslint');
+
+      it('should be able to add to dependencies', function () {
+        builder.fromJSON('{"dependencies":{}}');
+        builder.addDependencies('eslint');
+        expect(builder.getValue('dependencies').eslint).toBe(eslintVersion);
+
+        builder.fromJSON('{"dependencies":{}}');
+        builder.addDependencies(['eslint']);
+        expect(builder.getValue('dependencies').eslint).toBe(eslintVersion);
+
+        builder.fromJSON('{"dependencies":{}}');
+        builder.addDependencies('eslint', 'dependencies');
+        expect(builder.getValue('dependencies').eslint).toBe(eslintVersion);
+
+        builder.fromJSON('{"dependencies":{}}');
+        builder.addDependencies(['eslint'], 'dependencies');
+        expect(builder.getValue('dependencies').eslint).toBe(eslintVersion);
+      });
+
+      it('should be able to add to devDependencies', function () {
+        builder.fromJSON('{"devDependencies":{}}');
+        builder.addDependencies('eslint', 'devDependencies');
+        expect(builder.getValue('devDependencies').eslint).toBe(eslintVersion);
+
+        builder.fromJSON('{"devDependencies":{}}');
+        builder.addDependencies(['eslint'], 'devDependencies');
+        expect(builder.getValue('devDependencies').eslint).toBe(eslintVersion);
+      });
+
+      it('should be able to add to peerDependencies', function () {
+        builder.fromJSON('{"peerDependencies":{}}');
+        builder.addDependencies('eslint', 'peerDependencies');
+        expect(builder.getValue('peerDependencies').eslint).toBe(eslintVersion);
+
+        builder.fromJSON('{"peerDependencies":{}}');
+        builder.addDependencies(['eslint'], 'peerDependencies');
+        expect(builder.getValue('peerDependencies').eslint).toBe(eslintVersion);
+      });
+
+      it('should create dependency maps if they don\'t yet exist in the package', function () {
+        builder.fromJSON('{}');
+        builder.addDependencies('eslint');
+        builder.addDependencies('eslint', 'devDependencies');
+        builder.addDependencies('eslint', 'peerDependencies');
+        expect(builder.getValue('dependencies')).not.toBeUndefined();
+        expect(builder.getValue('devDependencies')).not.toBeUndefined();
+        expect(builder.getValue('peerDependencies')).not.toBeUndefined();
+      });
+
+      it('should not modify things if an invalid section was declared', function () {
+        builder.fromJSON('{}');
+        builder.addDependencies('eslint', 'lol');
+        expect(builder.getValues()).toEqual({});
+      });
+
+      it('should not override an existing dependency declaration', function () {
+        builder.fromJSON('{"dependencies":{"eslint":"0.0.1"}}');
+        builder.addDependencies(['eslint'], 'dependencies');
+        expect(builder.getValue('dependencies').eslint).toEqual('0.0.1');
+      });
+
+      it('should not add a dependency that is not globally managed', function () {
+        builder.fromJSON('{}');
+        builder.addDependencies('leftpad');
+        expect(builder.getValues()).toEqual({dependencies: {}});
+      });
+    });
   });
 })();
