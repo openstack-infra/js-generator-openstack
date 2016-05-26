@@ -11,7 +11,7 @@
     gerrit: {
       host: 'review.openstack.org',
       port: '29418',
-      project: 'openstack/test_project.git'
+      project: 'openstack/test-project.git'
     }
   };
   var iniContent;
@@ -35,12 +35,8 @@
    * @returns {generator} The passed generator, for promise chaining.
    */
   function initializeGerrit (generator) {
-    // Get the project name
-    var projectName = pkgBuilder.getValue("name", generator.appname);
-
     // Define our defaults
     iniContent = JSON.parse(JSON.stringify(iniDefaults));
-    iniContent.gerrit.project = 'openstack/' + projectName + '.git';
 
     // Read the existing file and populate it as defaults.
     if (generator.fs.exists(gerritFile)) {
@@ -60,6 +56,11 @@
    */
   function promptUserOptions (generator) {
     var deferred = Q.defer();
+
+    // Project name was not available during init phase. So we need to get it
+    // in prompt stage instead
+    var projectName = pkgBuilder.getValue("name", generator.appname);
+    iniContent.gerrit.project = 'openstack/' + projectName + '.git';
 
     if (!generator.options['non-interactive']) {
       // Go through the prompts.
