@@ -187,5 +187,25 @@
         expect(builder.getValues()).toEqual({dependencies: {}});
       });
     });
+
+    describe('addCommand', function () {
+      it('should add a command', function () {
+        builder.fromJSON('{"scripts":{}}');
+        builder.addCommand('foo', 'bar');
+        expect(builder.getValue('scripts').foo).toBe('bar');
+      });
+
+      it('should overwrite an existing command', function () {
+        builder.fromJSON('{"scripts":{"foo":"bar"}}');
+        builder.addCommand('foo', 'lol');
+        expect(builder.getValue('scripts').foo).toBe('lol');
+      });
+
+      it('should create the scripts hash if it doesn\'t exist', function () {
+        builder.fromJSON('{}');
+        builder.addCommand('foo', 'bar');
+        expect(builder.getValue('scripts')).toBeDefined();
+      });
+    });
   });
 })();

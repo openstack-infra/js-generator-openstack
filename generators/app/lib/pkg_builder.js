@@ -121,12 +121,31 @@
     return defaultValue || undefined;
   }
 
+  /**
+   * Create a specific NPM script command, invoked by 'npm run <name>' or 'npm <name>'.
+   *
+   * @param {String} name The name of the script.
+   * @param {String} command The command to invoke.
+   * @returns {void}
+   */
+  function addCommand (name, command) {
+
+    // sanity check, does 'scripts' exist?
+    if (!pkgContent.hasOwnProperty('scripts')) {
+      pkgContent.scripts = {};
+    }
+
+    // Save/Override the command.
+    pkgContent.scripts[name] = command;
+  }
+
   module.exports = {
     fromJSON: readPackage,
     toJSON: writePackage,
     setValues: setValues,
     getValues: getValues,
     getValue: getValue,
-    addDependencies: addDependencies
+    addDependencies: addDependencies,
+    addCommand: addCommand
   };
 })();
