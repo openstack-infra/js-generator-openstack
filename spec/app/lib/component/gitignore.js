@@ -84,11 +84,46 @@
 
           var files = projectBuilder.getIncludedFiles();
           var ignoreRef = files[0];
-          var ignoreContent = ignoreRef.content.split('\n');
+          var ignoreContent = ignoreRef.content().split('\n');
           expect(ignoreContent.length).toBe(2);
 
           expect(ignoreContent[0]).toEqual('one');
           expect(ignoreContent[1]).toEqual('two');
+        });
+
+      it('should include any files flagged as ignored in the project builder.',
+        function () {
+          mockGenerator.fs.write('.gitignore', '');
+          projectBuilder.ignoreFile('foo/bar.json');
+
+          gitignore.init(mockGenerator);
+          gitignore.prompt(mockGenerator);
+          gitignore.configure(mockGenerator);
+
+          var files = projectBuilder.getIncludedFiles();
+          var ignoreRef = files[0]; // There should only be one file.
+          var ignoreContent = ignoreRef.content().split('\n');
+          expect(ignoreContent.length).toBe(1);
+
+          expect(ignoreContent[0]).toBe('foo/bar.json');
+        });
+
+      it('should de-duplicate file paths from multiple locations.',
+        function () {
+          // include 'node_modules' from both an existing file and from the project builder.
+          mockGenerator.fs.write('.gitignore', ['node_modules'].join('\n'));
+          projectBuilder.ignoreFile('node_modules');
+
+          gitignore.init(mockGenerator);
+          gitignore.prompt(mockGenerator);
+          gitignore.configure(mockGenerator);
+
+          var files = projectBuilder.getIncludedFiles();
+          var ignoreRef = files[0]; // There should only be one file.
+          var ignoreContent = ignoreRef.content().split('\n');
+          expect(ignoreContent.length).toBe(1);
+
+          expect(ignoreContent[0]).toBe('node_modules');
         });
 
       it('should sort the ignored files.',
@@ -101,7 +136,7 @@
 
           var files = projectBuilder.getIncludedFiles();
           var ignoreRef = files[0];
-          var ignoreContent = ignoreRef.content.split('\n');
+          var ignoreContent = ignoreRef.content().split('\n');
           expect(ignoreContent.length).toBe(2);
           expect(ignoreContent[0]).toBe('a_line');
           expect(ignoreContent[1]).toBe('b_line');
@@ -117,7 +152,7 @@
 
           var files = projectBuilder.getIncludedFiles();
           var ignoreRef = files[0];
-          var ignoreContent = ignoreRef.content.split('\n');
+          var ignoreContent = ignoreRef.content().split('\n');
           expect(ignoreContent.length).toBe(2);
           expect(ignoreContent[0]).toBe('1_one');
           expect(ignoreContent[1]).toBe('2_two');
@@ -133,7 +168,7 @@
 
           var files = projectBuilder.getIncludedFiles();
           var ignoreRef = files[0];
-          var ignoreContent = ignoreRef.content.split('\n');
+          var ignoreContent = ignoreRef.content().split('\n');
           expect(ignoreContent.length).toBe(1);
           expect(ignoreContent[0]).toBe('1_one');
         });
@@ -148,7 +183,7 @@
 
           var files = projectBuilder.getIncludedFiles();
           var ignoreRef = files[0];
-          var ignoreContent = ignoreRef.content.split('\n');
+          var ignoreContent = ignoreRef.content().split('\n');
           expect(ignoreContent.length).toBe(1);
           expect(ignoreContent[0]).toBe('1_one');
         });
