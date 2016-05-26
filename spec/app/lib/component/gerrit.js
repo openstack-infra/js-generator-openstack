@@ -36,7 +36,7 @@
 
     // Test the content
     expect(gitreview).toBeTruthy();
-    expect(content).toEqual(gitreview);
+    expect(gitreview).toEqual(content);
   }
 
   describe('generator-openstack:lib/component/gerrit', function () {
@@ -114,6 +114,7 @@
           // No answers, non-interactive run.
           var mockAnswers = {enableGerrit: true};
           pkgBuilder.fromJSON(JSON.stringify({name: 'foo'}));
+
           var generator = mocks.buildGenerator(null, mockAnswers);
           generator.fs.delete('.gitreview');
 
@@ -173,7 +174,6 @@
           gerrit.init(generator);
           gerrit.prompt(generator);
           gerrit.configure(generator);
-
           expectGerritFileContent(iniFile);
         });
 

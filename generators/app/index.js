@@ -30,7 +30,6 @@
       // Initialize components.
       Q(this)
         .then(pkg.init)             // Package.json
-        .then(gerrit.init)          // Gerrit
         .then(editorconfig.init)    // Editorconfig
         .then(license.init)         // Licensing
         .then(eslint.init)          // Linting
@@ -46,6 +45,7 @@
       // Prompt components.
       Q(this)
         .then(pkg.prompt)             // Package.json
+        .then(gerrit.init)            // Gerrit init depends on package information
         .then(gerrit.prompt)          // Gerrit
         .then(editorconfig.prompt)    // Editorconfig
         .then(license.prompt)         // Licensing
