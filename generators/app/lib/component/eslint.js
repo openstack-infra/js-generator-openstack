@@ -21,6 +21,7 @@
 
     // Add the dependencies.
     pkgBuilder.addDependencies(['eslint', 'eslint-config-openstack'], 'devDependencies');
+    pkgBuilder.addCommand('lint', 'eslint ./');
 
     return generator;
   }
