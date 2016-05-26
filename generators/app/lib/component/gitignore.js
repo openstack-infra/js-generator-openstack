@@ -53,15 +53,32 @@
    * @returns {generator} The passed generator, for promise chaining.
    */
   function configureGitIgnore (generator) {
-    var ignoreContent = Object.keys(excludedPaths).sort().join('\n');
+    var ignoreContent = buildGitignore();
     if (ignoreContent.length === 0) {
       // Delete the file if there's nothing to ignore.
       projectBuilder.removeFile(filePath);
     } else {
-      projectBuilder.writeFile(filePath, ignoreContent);
+      projectBuilder.writeFile(filePath, buildGitignore);
     }
 
     return generator;
+  }
+
+  /**
+   * Generate the content of our .gitignore file from the configured list of excluded paths,
+   * as well as any project-level configured ignoreFiles.
+   *
+   * @returns {string} The content of the .eslintignore file.
+   */
+  function buildGitignore () {
+    var ignoredFiles = projectBuilder.getIgnoredFiles();
+    for (var i = 0; i < ignoredFiles.length; i++) {
+      if (!excludedPaths.hasOwnProperty(ignoredFiles[i])) {
+        excludedPaths[ignoredFiles[i]] = true;
+      }
+    }
+
+    return Object.keys(excludedPaths).sort().join('\n');
   }
 
   module.exports = {
