@@ -23,7 +23,7 @@
           type: 'input',
           name: 'name',
           message: 'Project- Name:',
-          default: pkgBuilder.getValue('name')
+          default: pkgBuilder.getValue('name', generator.appname)
         }, {
           type: 'input',
           name: 'description',
