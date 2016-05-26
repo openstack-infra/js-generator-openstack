@@ -2,6 +2,7 @@
   'use strict';
 
   var Q = require('q');
+  var hyphenize = require('hyphenize');
   var pkgBuilder = require('../pkg_builder');
   var projectBuilder = require('../project_builder');
 
@@ -23,7 +24,7 @@
           type: 'input',
           name: 'name',
           message: 'Project- Name:',
-          default: pkgBuilder.getValue('name')
+          default: pkgBuilder.getValue('name', hyphenize(generator.appname))
         }, {
           type: 'input',
           name: 'description',
