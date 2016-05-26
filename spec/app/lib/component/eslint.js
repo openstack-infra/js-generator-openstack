@@ -61,6 +61,20 @@
           expect(devDeps.eslint).toBeDefined();
           expect(devDeps['eslint-config-openstack']).toBeDefined();
         });
+
+      it('should add the lint command to the project',
+        function () {
+          pkgBuilder.fromJSON('{}');
+
+          var scripts = pkgBuilder.getValue('scripts');
+          expect(scripts).not.toBeDefined();
+
+          eslint.prompt(mockGenerator);
+
+          var newScripts = pkgBuilder.getValue('scripts');
+          expect(newScripts.lint).toBeDefined();
+          expect(newScripts.lint).toEqual('eslint ./');
+        });
     });
 
     describe('configure()', function () {
