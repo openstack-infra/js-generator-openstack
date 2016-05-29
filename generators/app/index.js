@@ -11,6 +11,7 @@
   var license = require('./lib/component/license');
   var eslint = require('./lib/component/eslint');
   var gitignore = require('./lib/component/gitignore');
+  var testing = require('./lib/component/testing');
 
   module.exports = yeoman.Base.extend({
 
@@ -35,6 +36,7 @@
         .then(license.init)         // Licensing
         .then(eslint.init)          // Linting
         .then(gitignore.init)       // Gitignore
+        .then(testing.init)         // Testing
         .then(function () {
           done();
         });
@@ -51,6 +53,7 @@
         .then(license.prompt)         // Licensing
         .then(eslint.prompt)          // Linting
         .then(gitignore.prompt)       // Gitignore
+        .then(testing.prompt)         // Testing
         .then(function () {
           done();
         });
@@ -67,6 +70,7 @@
         .then(license.configure)         // Licensing
         .then(eslint.configure)          // Linting
         .then(gitignore.configure)       // Gitignore
+        .then(testing.configure)         // Testing
         .then(function () {
           done();
         });
