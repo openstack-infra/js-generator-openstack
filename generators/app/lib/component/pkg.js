@@ -97,6 +97,10 @@
     // Local .npm cache
     projectBuilder.ignoreFile('.npm');
 
+    var devDeps = ['istanbul', 'jasmine'];
+
+    pkgBuilder.addDependencies(devDeps, 'devDependencies');
+
     return generator;
   }
 
