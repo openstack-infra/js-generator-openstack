@@ -4,6 +4,7 @@
   var Q = require('q');
   var pkgBuilder = require('../pkg_builder');
   var projectBuilder = require('../project_builder');
+  var globals = require('../global_dependencies');
 
   var packagePath = 'package.json';
 
@@ -70,6 +71,13 @@
     if (fs.exists(packagePath)) {
       pkgBuilder.fromJSON(fs.read(packagePath));
     }
+
+    var devDeps = globals.synchronize({
+      istanbul: '',
+      jasmine: ''
+    });
+
+    pkgBuilder.setValues({devDependencies: devDeps});
 
     return generator;
   }
