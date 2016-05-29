@@ -5,6 +5,7 @@
   var hyphenize = require('hyphenize');
   var pkgBuilder = require('../pkg_builder');
   var projectBuilder = require('../project_builder');
+  var globals = require('../global_dependencies');
 
   var packagePath = 'package.json';
 
@@ -80,6 +81,13 @@
     projectBuilder.ignoreFile('package');
     // Local .npm cache
     projectBuilder.ignoreFile('.npm');
+
+    var devDeps = [
+	    'istanbul',
+	    'jasmine'
+    ];
+
+    pkgBuilder.addDependencies(devDeps, 'devDependencies');
 
     return generator;
   }

@@ -84,6 +84,7 @@
 
           // Call the generator
           expect(pkgBuilder.getValues()).toEqual({
+            devDependencies: { istanbul: '^0.4.2', jasmine: '^2.4.1'},
             name: generator.appname,
             description: null,
             version: '0.0.1',
@@ -111,6 +112,7 @@
           var generator = mocks.buildGenerator();
 
           var mockPackage = {
+            devDependencies: { istanbul: '^0.4.2', jasmine: '^2.4.1'},
             name: 'name',
             description: 'description',
             version: '0.0.1',
@@ -130,6 +132,7 @@
         function () {
           var config = {};
           var mockAnswers = {
+            devDependencies: { istanbul: '^0.4.2', jasmine: '^2.4.1'},
             name: 'name',
             description: 'description',
             version: '1.0.0',
