@@ -8,7 +8,8 @@
     "test": "istanbul cover jasmine",
     "posttest": "istanbul check-coverage",
     "prepublish": "nsp check",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "doc": "jsdoc generators -r -d docs"
   },
   "keywords": [
     "yeoman-generator",
@@ -33,6 +34,7 @@
     "eslint-config-openstack": "1.2.4",
     "istanbul": "^0.4.2",
     "jasmine": "^2.4.1",
+    "jsdoc": "^3.4.0",
     "karma": "^0.13.22",
     "karma-htmlfile-reporter": "^0.2.2",
     "mem-fs": "^1.1.2",
