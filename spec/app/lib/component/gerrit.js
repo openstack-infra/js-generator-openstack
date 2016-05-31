@@ -36,7 +36,7 @@
 
     // Test the content
     expect(gitreview).toBeTruthy();
-    expect(content).toEqual(gitreview);
+    expect(gitreview).toEqual(content);
   }
 
   describe('generator-openstack:lib/component/gerrit', function () {
