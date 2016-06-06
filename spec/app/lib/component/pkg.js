@@ -73,7 +73,7 @@
 
           // Call the generator
           expect(pkgBuilder.getValues()).toEqual({
-            name: null,
+            name: generator.appname,
             description: null,
             version: '0.0.1',
             homepage: 'http://www.openstack.org/',

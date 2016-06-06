@@ -93,6 +93,8 @@
           // No answers, non-interactive run.
           var mockAnswers = {enableGerrit: true};
           var generator = mocks.buildGenerator(null, mockAnswers);
+          pkgBuilder.fromJSON(JSON.stringify({name: 'generator-openstack'}));
+
           generator.fs.delete('.gitreview');
 
           // Set defaults
@@ -114,6 +116,7 @@
           // No answers, non-interactive run.
           var mockAnswers = {enableGerrit: true};
           pkgBuilder.fromJSON(JSON.stringify({name: 'foo'}));
+
           var generator = mocks.buildGenerator(null, mockAnswers);
           generator.fs.delete('.gitreview');
 
@@ -173,7 +176,6 @@
           gerrit.init(generator);
           gerrit.prompt(generator);
           gerrit.configure(generator);
-
           expectGerritFileContent(iniFile);
         });
 
@@ -214,11 +216,13 @@
       it('should create a .gitreview file if enabled',
         function () {
           var generator = mocks.buildGenerator(null, {enableGerrit: true});
+          pkgBuilder.fromJSON(JSON.stringify({name: 'generator-openstack'}));
 
           // Make sure we don't have something left over from another test.
           generator.fs.delete('.gitreview');
 
           gerrit.init(generator);
+          gerrit.prompt(generator);
           gerrit.configure(generator);
 
           expectGerritFileContent({
