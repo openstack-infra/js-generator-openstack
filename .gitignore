@@ -2,6 +2,7 @@
 *.log
 *.pid
 *.seed
+./dist
 .DS_Store
 .idea
 .node_repl_history
