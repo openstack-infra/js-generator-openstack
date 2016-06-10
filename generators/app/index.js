@@ -9,6 +9,7 @@
   var gerrit = require('./lib/component/gerrit');
   var editorconfig = require('./lib/component/editorconfig');
   var license = require('./lib/component/license');
+  var structure = require('./lib/component/structure');
   var eslint = require('./lib/component/eslint');
   var gitignore = require('./lib/component/gitignore');
   var nsp = require('./lib/component/nsp');
@@ -34,6 +35,7 @@
         .then(gerrit.init)          // Gerrit
         .then(editorconfig.init)    // Editorconfig
         .then(license.init)         // Licensing
+        .then(structure.init)       // Project Structure
         .then(eslint.init)          // Linting
         .then(gitignore.init)       // Gitignore
         .then(nsp.init)             // NSP
@@ -51,6 +53,7 @@
         .then(gerrit.prompt)          // Gerrit
         .then(editorconfig.prompt)    // Editorconfig
         .then(license.prompt)         // Licensing
+        .then(structure.prompt)       // Project Structure
         .then(eslint.prompt)          // Linting
         .then(gitignore.prompt)       // Gitignore
         .then(nsp.prompt)             // NSP
@@ -68,6 +71,7 @@
         .then(gerrit.configure)          // Gerrit
         .then(editorconfig.configure)    // Editorconfig
         .then(license.configure)         // Licensing
+        .then(structure.configure)       // Project Structure
         .then(eslint.configure)          // Linting
         .then(gitignore.configure)       // Gitignore
         .then(nsp.configure)             // NSP
