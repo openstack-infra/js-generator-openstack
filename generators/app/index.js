@@ -106,6 +106,10 @@
       excluded.forEach(function (path) {
         self.fs.delete(self.destinationPath(path));
       });
+    },
+
+    install: function () {
+      this.npmInstall();
     }
   });
 })();
