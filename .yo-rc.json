@@ -1,0 +1,9 @@
+{
+  "generator-openstack": {
+    "srcDir": "./generators",
+    "distDir": "./dist",
+    "testDir": "./spec",
+    "engine": "node",
+    "language": "es5"
+  }
+}
