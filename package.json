@@ -8,7 +8,8 @@
     "test": "istanbul cover jasmine",
     "posttest": "istanbul check-coverage",
     "prepublish": "nsp check",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "doc": "(cd doc; make html)"
   },
   "keywords": [
     "yeoman-generator",
