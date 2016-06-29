@@ -14,115 +14,113 @@
  * under the License.
  */
 
-(function () {
-  'use strict';
+'use strict';
 
-  var pkgBuilder = require('../pkg_builder');
-  var projectBuilder = require('../project_builder');
-  var yaml = require('js-yaml');
+var pkgBuilder = require('../pkg_builder');
+var projectBuilder = require('../project_builder');
+var yaml = require('js-yaml');
 
-  var excludedPaths = [];
-  var ignoreFile = '.eslintignore';
-  var rcFile = '.eslintrc';
-  var eslintrc = {extends: 'openstack'};
+var excludedPaths = [];
+var ignoreFile = '.eslintignore';
+var rcFile = '.eslintrc';
+var eslintrc = {extends: 'openstack'};
 
-  /**
-   * This method configures the package builder with all options necessary to support eslint.
-   *
-   * @param {generator} generator The currently active generator.
-   * @returns {generator} The passed generator, for promise chaining.
-   */
-  function promptEslint (generator) {
-    // At this time, we don't actually need to prompt the user.
+/**
+ * This method configures the package builder with all options necessary to support eslint.
+ *
+ * @param {generator} generator The currently active generator.
+ * @returns {generator} The passed generator, for promise chaining.
+ */
+function promptEslint (generator) {
+  // At this time, we don't actually need to prompt the user.
 
-    // Add the dependencies.
-    pkgBuilder.addDependencies(['eslint', 'eslint-config-openstack'], 'devDependencies');
-    pkgBuilder.addCommand('lint', 'eslint ./');
+  // Add the dependencies.
+  pkgBuilder.addDependencies(['eslint', 'eslint-config-openstack'], 'devDependencies');
+  pkgBuilder.addCommand('lint', 'eslint ./');
 
-    return generator;
-  }
+  return generator;
+}
 
-  /**
-   * Read the existing .eslintrc and .eslintignore files, and populate our initial configuration
-   * with them.
-   *
-   * @param {generator} generator The currently active generator.
-   * @returns {generator} The passed generator, for promise chaining.
-   */
-  function initializeEslint (generator) {
-    var fs = generator.fs;
+/**
+ * Read the existing .eslintrc and .eslintignore files, and populate our initial configuration
+ * with them.
+ *
+ * @param {generator} generator The currently active generator.
+ * @returns {generator} The passed generator, for promise chaining.
+ */
+function initializeEslint (generator) {
+  var fs = generator.fs;
 
-    // Re-initialize excluded paths.
-    excludedPaths = [];
+  // Re-initialize excluded paths.
+  excludedPaths = [];
 
-    // Read .eslintignore.
-    if (fs.exists(ignoreFile)) {
-      var paths = fs.read(ignoreFile)
-        .split('\n')
-        .filter(function (item) {
-          // Remove empty lines.
-          return item.length > 0;
-        });
-
-      paths.forEach(function (item) {
-        excludedPaths.push(item);
+  // Read .eslintignore.
+  if (fs.exists(ignoreFile)) {
+    var paths = fs.read(ignoreFile)
+      .split('\n')
+      .filter(function (item) {
+        // Remove empty lines.
+        return item.length > 0;
       });
-    }
 
-    // Read .eslintrc
-    if (fs.exists(rcFile)) {
-      eslintrc = yaml.safeLoad(fs.read(rcFile));
-    }
-
-    return generator;
-  }
-
-  /**
-   * Configure the project by adding required files.
-   *
-   * @param {generator} generator The currently active generator.
-   * @returns {generator} The passed generator, for promise chaining.
-   */
-  function configureEslint (generator) {
-    if (buildEslintIgnore().length === 0) {
-      projectBuilder.removeFile('.eslintignore');
-    } else {
-      projectBuilder.writeFile('.eslintignore', buildEslintIgnore);
-    }
-    projectBuilder.writeFile('.eslintrc', buildEslintRc);
-
-    return generator;
-  }
-
-  /**
-   * Generate the content of our .eslintignore file from the configured list of excluded paths,
-   * as well as any project-level configured ignoreFiles.
-   *
-   * @returns {string} The content of the .eslintignore file.
-   */
-  function buildEslintIgnore () {
-    var ignoredFiles = projectBuilder.getIgnoredFiles();
-    ignoredFiles.forEach(function (item) {
-      if (excludedPaths.indexOf(item) === -1) {
-        excludedPaths.push(item);
-      }
+    paths.forEach(function (item) {
+      excludedPaths.push(item);
     });
-
-    return excludedPaths.sort().join('\n');
   }
 
-  /**
-   * Generate the content of our .eslintrc file from the current configuration.
-   *
-   * @returns {string} The content of the .eslintrc file.
-   */
-  function buildEslintRc () {
-    return yaml.safeDump(eslintrc);
+  // Read .eslintrc
+  if (fs.exists(rcFile)) {
+    eslintrc = yaml.safeLoad(fs.read(rcFile));
   }
 
-  module.exports = {
-    init: initializeEslint,
-    prompt: promptEslint,
-    configure: configureEslint
-  };
-})();
+  return generator;
+}
+
+/**
+ * Configure the project by adding required files.
+ *
+ * @param {generator} generator The currently active generator.
+ * @returns {generator} The passed generator, for promise chaining.
+ */
+function configureEslint (generator) {
+  if (buildEslintIgnore().length === 0) {
+    projectBuilder.removeFile('.eslintignore');
+  } else {
+    projectBuilder.writeFile('.eslintignore', buildEslintIgnore);
+  }
+  projectBuilder.writeFile('.eslintrc', buildEslintRc);
+
+  return generator;
+}
+
+/**
+ * Generate the content of our .eslintignore file from the configured list of excluded paths,
+ * as well as any project-level configured ignoreFiles.
+ *
+ * @returns {string} The content of the .eslintignore file.
+ */
+function buildEslintIgnore () {
+  var ignoredFiles = projectBuilder.getIgnoredFiles();
+  ignoredFiles.forEach(function (item) {
+    if (excludedPaths.indexOf(item) === -1) {
+      excludedPaths.push(item);
+    }
+  });
+
+  return excludedPaths.sort().join('\n');
+}
+
+/**
+ * Generate the content of our .eslintrc file from the current configuration.
+ *
+ * @returns {string} The content of the .eslintrc file.
+ */
+function buildEslintRc () {
+  return yaml.safeDump(eslintrc);
+}
+
+module.exports = {
+  init: initializeEslint,
+  prompt: promptEslint,
+  configure: configureEslint
+};
