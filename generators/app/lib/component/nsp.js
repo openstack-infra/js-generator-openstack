@@ -19,53 +19,52 @@
  * Its job is to identify known vulnerabilities by scanning the projects
  * source and dependencies.
  */
-(function () {
-  'use strict';
 
-  var projectBuilder = require('../project_builder');
-  var pkgBuilder = require('../pkg_builder');
+'use strict';
 
-  /**
-   * No-op placeholder method, for handlers we don't need.
-   *
-   * @param {generator} generator The currently active generator.
-   * @returns {generator} The passed generator, for promise chaining.
-   */
-  function noop (generator) {
-    return generator;
-  }
+var projectBuilder = require('../project_builder');
+var pkgBuilder = require('../pkg_builder');
 
-  /**
-   * This method configures the package builder with all options necessary
-   * to run nsp.
-   *
-   * @param {generator} generator The currently active generator.
-   * @returns {generator} The passed generator, for promise chaining.
-   */
-  function promptNsp (generator) {
-    // At this time, we don't actually need to prompt the user.
+/**
+ * No-op placeholder method, for handlers we don't need.
+ *
+ * @param {generator} generator The currently active generator.
+ * @returns {generator} The passed generator, for promise chaining.
+ */
+function noop (generator) {
+  return generator;
+}
 
-    // Add the dependencies.
-    pkgBuilder.addDependencies(['nsp'], 'devDependencies');
-    pkgBuilder.addCommand('prepublish', 'nsp check');
+/**
+ * This method configures the package builder with all options necessary
+ * to run nsp.
+ *
+ * @param {generator} generator The currently active generator.
+ * @returns {generator} The passed generator, for promise chaining.
+ */
+function promptNsp (generator) {
+  // At this time, we don't actually need to prompt the user.
 
-    return generator;
-  }
+  // Add the dependencies.
+  pkgBuilder.addDependencies(['nsp'], 'devDependencies');
+  pkgBuilder.addCommand('prepublish', 'nsp check');
 
-  /**
-   * Configure the project by adding required files.
-   *
-   * @param {generator} generator The currently active generator.
-   * @returns {generator} The passed generator, for promise chaining.
-   */
-  function configureNsp (generator) {
-    projectBuilder.addFile('.nsprc');
-    return generator;
-  }
+  return generator;
+}
 
-  module.exports = {
-    init: noop,
-    prompt: promptNsp,
-    configure: configureNsp
-  };
-})();
+/**
+ * Configure the project by adding required files.
+ *
+ * @param {generator} generator The currently active generator.
+ * @returns {generator} The passed generator, for promise chaining.
+ */
+function configureNsp (generator) {
+  projectBuilder.addFile('.nsprc');
+  return generator;
+}
+
+module.exports = {
+  init: noop,
+  prompt: promptNsp,
+  configure: configureNsp
+};

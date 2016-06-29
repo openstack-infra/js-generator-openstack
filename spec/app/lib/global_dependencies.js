@@ -14,82 +14,81 @@
  * under the License.
  */
 
-(function () {
-  'use strict';
-  var builder = require('../../../generators/app/lib/global_dependencies');
-  var globals = require('../../../global-dependencies.json');
-  var semver = require('semver');
+'use strict';
 
-  describe('lib/global_dependencies', function () {
+var builder = require('../../../generators/app/lib/global_dependencies');
+var globals = require('../../../global-dependencies.json');
+var semver = require('semver');
 
-    describe('data', function () {
-      it('should contain all dependencies from the root global-dependencies.json',
-        function () {
-          for (var key in globals) {
-            if (globals.hasOwnProperty(key)) {
-              expect(builder.contains(key)).toBe(true);
-            }
+describe('lib/global_dependencies', function () {
+
+  describe('data', function () {
+    it('should contain all dependencies from the root global-dependencies.json',
+      function () {
+        for (var key in globals) {
+          if (globals.hasOwnProperty(key)) {
+            expect(builder.contains(key)).toBe(true);
           }
-        });
+        }
+      });
 
-      it('should contain valid semver versions for all dependencies',
-        function () {
-          for (var key in globals) {
-            if (globals.hasOwnProperty(key)) {
-              var version = builder.read(key);
-              expect(semver.validRange(version)).toBeTruthy();
-            }
+    it('should contain valid semver versions for all dependencies',
+      function () {
+        for (var key in globals) {
+          if (globals.hasOwnProperty(key)) {
+            var version = builder.read(key);
+            expect(semver.validRange(version)).toBeTruthy();
           }
-        });
+        }
+      });
+  });
+
+  describe('contains()', function () {
+    it('should return true when a dependency exists', function () {
+      expect(builder.contains('eslint')).toBe(true);
     });
 
-    describe('contains()', function () {
-      it('should return true when a dependency exists', function () {
-        expect(builder.contains('eslint')).toBe(true);
-      });
-
-      it('should return false when a dependency doesn\'t exist', function () {
-        expect(builder.contains('notarealdependency')).toBe(false);
-      });
-    });
-
-    describe('read()', function () {
-      it('should return the version of a dependency', function () {
-        expect(builder.read('eslint')).toBe(globals.eslint);
-      });
-
-      it('should return undefined when a dependency doesn\'t exist', function () {
-        expect(builder.read('notarealdependency')).toBeUndefined();
-      });
-    });
-
-    describe('synchronize()', function () {
-      it('should update dependencies that are out of date.', function () {
-        var testDeps = {
-          eslint: '0.0.1'
-        };
-        var newDeps = builder.synchronize(testDeps);
-
-        expect(newDeps.eslint).toBeDefined();
-        expect(newDeps.eslint).not.toEqual(testDeps.eslint);
-        expect(newDeps.eslint).toEqual(globals.eslint);
-      });
-
-      it('should not update dependencies that are up to date.', function () {
-        var testDeps = {
-          eslint: globals.eslint
-        };
-        var newDeps = builder.synchronize(testDeps);
-        expect(newDeps).toEqual(testDeps);
-      });
-
-      it('should not touch unregistered dependencies.', function () {
-        var testDeps = {
-          notarealdependency: '0.0.1'
-        };
-        var newDeps = builder.synchronize(testDeps);
-        expect(newDeps.notarealdependency).toEqual(testDeps.notarealdependency);
-      });
+    it('should return false when a dependency doesn\'t exist', function () {
+      expect(builder.contains('notarealdependency')).toBe(false);
     });
   });
-})();
+
+  describe('read()', function () {
+    it('should return the version of a dependency', function () {
+      expect(builder.read('eslint')).toBe(globals.eslint);
+    });
+
+    it('should return undefined when a dependency doesn\'t exist', function () {
+      expect(builder.read('notarealdependency')).toBeUndefined();
+    });
+  });
+
+  describe('synchronize()', function () {
+    it('should update dependencies that are out of date.', function () {
+      var testDeps = {
+        eslint: '0.0.1'
+      };
+      var newDeps = builder.synchronize(testDeps);
+
+      expect(newDeps.eslint).toBeDefined();
+      expect(newDeps.eslint).not.toEqual(testDeps.eslint);
+      expect(newDeps.eslint).toEqual(globals.eslint);
+    });
+
+    it('should not update dependencies that are up to date.', function () {
+      var testDeps = {
+        eslint: globals.eslint
+      };
+      var newDeps = builder.synchronize(testDeps);
+      expect(newDeps).toEqual(testDeps);
+    });
+
+    it('should not touch unregistered dependencies.', function () {
+      var testDeps = {
+        notarealdependency: '0.0.1'
+      };
+      var newDeps = builder.synchronize(testDeps);
+      expect(newDeps.notarealdependency).toEqual(testDeps.notarealdependency);
+    });
+  });
+});

@@ -14,75 +14,74 @@
  * under the License.
  */
 
-(function () {
-  'use strict';
-  var libDir = '../../../../generators/app/lib';
+'use strict';
 
-  var editorconfig = require(libDir + '/component/editorconfig');
-  var projectBuilder = require(libDir + '/project_builder');
-  var mocks = require('../../../helpers/mocks');
-  var mockGenerator;
+var libDir = '../../../../generators/app/lib';
 
-  describe('generator-openstack:lib/component/editorconfig', function () {
+var editorconfig = require(libDir + '/component/editorconfig');
+var projectBuilder = require(libDir + '/project_builder');
+var mocks = require('../../../helpers/mocks');
+var mockGenerator;
 
-    beforeEach(function () {
-      mockGenerator = mocks.buildGenerator();
-      projectBuilder.clear();
+describe('generator-openstack:lib/component/editorconfig', function () {
+
+  beforeEach(function () {
+    mockGenerator = mocks.buildGenerator();
+    projectBuilder.clear();
+  });
+
+  it('should define init, prompt, and configure',
+    function () {
+      expect(typeof editorconfig.init).toBe('function');
+      expect(typeof editorconfig.prompt).toBe('function');
+      expect(typeof editorconfig.configure).toBe('function');
     });
 
-    it('should define init, prompt, and configure',
+  describe('init()', function () {
+    it('should return a generator',
       function () {
-        expect(typeof editorconfig.init).toBe('function');
-        expect(typeof editorconfig.prompt).toBe('function');
-        expect(typeof editorconfig.configure).toBe('function');
+        var outputGenerator = editorconfig.init(mockGenerator);
+        expect(outputGenerator).toEqual(mockGenerator);
       });
 
-    describe('init()', function () {
-      it('should return a generator',
-        function () {
-          var outputGenerator = editorconfig.init(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
-        });
-
-      it('should do nothing',
-        function () {
-          var spy = spyOn(mockGenerator.config, 'defaults');
-          editorconfig.init(mockGenerator);
-          expect(spy.calls.any()).toBeFalsy();
-        });
-    });
-
-    describe('prompt()', function () {
-      it('should return a generator',
-        function () {
-          var outputGenerator = editorconfig.prompt(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
-        });
-
-      it('should do nothing',
-        function () {
-          var spy = spyOn(mockGenerator, 'prompt');
-          editorconfig.prompt(mockGenerator);
-          expect(spy.calls.any()).toBeFalsy();
-        });
-    });
-
-    describe('configure()', function () {
-      it('should return a generator',
-        function () {
-          var outputGenerator = editorconfig.configure(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
-        });
-
-      it('should add editorconfig to the project files.',
-        function () {
-          editorconfig.configure(mockGenerator);
-
-          var files = projectBuilder.getIncludedFiles();
-          expect(files.length).toBe(1);
-          expect(files[0].from).toBe('.editorconfig');
-          expect(files[0].to).toBe('.editorconfig');
-        });
-    });
+    it('should do nothing',
+      function () {
+        var spy = spyOn(mockGenerator.config, 'defaults');
+        editorconfig.init(mockGenerator);
+        expect(spy.calls.any()).toBeFalsy();
+      });
   });
-})();
+
+  describe('prompt()', function () {
+    it('should return a generator',
+      function () {
+        var outputGenerator = editorconfig.prompt(mockGenerator);
+        expect(outputGenerator).toEqual(mockGenerator);
+      });
+
+    it('should do nothing',
+      function () {
+        var spy = spyOn(mockGenerator, 'prompt');
+        editorconfig.prompt(mockGenerator);
+        expect(spy.calls.any()).toBeFalsy();
+      });
+  });
+
+  describe('configure()', function () {
+    it('should return a generator',
+      function () {
+        var outputGenerator = editorconfig.configure(mockGenerator);
+        expect(outputGenerator).toEqual(mockGenerator);
+      });
+
+    it('should add editorconfig to the project files.',
+      function () {
+        editorconfig.configure(mockGenerator);
+
+        var files = projectBuilder.getIncludedFiles();
+        expect(files.length).toBe(1);
+        expect(files[0].from).toBe('.editorconfig');
+        expect(files[0].to).toBe('.editorconfig');
+      });
+  });
+});

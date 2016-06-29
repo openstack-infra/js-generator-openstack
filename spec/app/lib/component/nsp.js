@@ -14,96 +14,95 @@
  * under the License.
  */
 
-(function () {
-  'use strict';
-  var libDir = '../../../../generators/app/lib';
+'use strict';
 
-  var nsp = require(libDir + '/component/nsp');
-  var projectBuilder = require(libDir + '/project_builder');
-  var pkgBuilder = require(libDir + '/pkg_builder');
-  var mocks = require('../../../helpers/mocks');
-  var mockGenerator;
+var libDir = '../../../../generators/app/lib';
 
-  describe('generator-openstack:lib/component/nsp', function () {
+var nsp = require(libDir + '/component/nsp');
+var projectBuilder = require(libDir + '/project_builder');
+var pkgBuilder = require(libDir + '/pkg_builder');
+var mocks = require('../../../helpers/mocks');
+var mockGenerator;
 
-    beforeEach(function () {
-      mockGenerator = mocks.buildGenerator();
-      projectBuilder.clear();
+describe('generator-openstack:lib/component/nsp', function () {
+
+  beforeEach(function () {
+    mockGenerator = mocks.buildGenerator();
+    projectBuilder.clear();
+  });
+
+  it('should define init, prompt, and configure',
+    function () {
+      expect(typeof nsp.init).toBe('function');
+      expect(typeof nsp.prompt).toBe('function');
+      expect(typeof nsp.configure).toBe('function');
     });
 
-    it('should define init, prompt, and configure',
+  describe('init()', function () {
+    it('should return a generator',
       function () {
-        expect(typeof nsp.init).toBe('function');
-        expect(typeof nsp.prompt).toBe('function');
-        expect(typeof nsp.configure).toBe('function');
+        var outputGenerator = nsp.init(mockGenerator);
+        expect(outputGenerator).toEqual(mockGenerator);
       });
 
-    describe('init()', function () {
-      it('should return a generator',
-        function () {
-          var outputGenerator = nsp.init(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
-        });
-
-      it('should do nothing',
-        function () {
-          var spy = spyOn(mockGenerator.config, 'defaults');
-          nsp.init(mockGenerator);
-          expect(spy.calls.any()).toBeFalsy();
-        });
-    });
-
-    describe('prompt()', function () {
-      it('should return a generator',
-        function () {
-          var outputGenerator = nsp.prompt(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
-        });
-
-      it('should add nsp to dependencies',
-        function () {
-          pkgBuilder.fromJSON('{"devDependencies":{}}');
-
-          var devDeps = pkgBuilder.getValue('devDependencies');
-          expect(devDeps.nsp).not.toBeDefined();
-
-          nsp.prompt(mockGenerator);
-
-          devDeps = pkgBuilder.getValue('devDependencies');
-          expect(devDeps.nsp).toBeDefined();
-        });
-
-      it('should add the prepublish hook to the project',
-        function () {
-          pkgBuilder.fromJSON('{}');
-
-          var scripts = pkgBuilder.getValue('scripts');
-          expect(scripts).not.toBeDefined();
-
-          nsp.prompt(mockGenerator);
-
-          var newScripts = pkgBuilder.getValue('scripts');
-          expect(newScripts.prepublish).toBeDefined();
-          expect(newScripts.prepublish).toEqual('nsp check');
-        });
-    });
-
-    describe('configure()', function () {
-      it('should return a generator',
-        function () {
-          var outputGenerator = nsp.configure(mockGenerator);
-          expect(outputGenerator).toEqual(mockGenerator);
-        });
-
-      it('should add .nsprc to the project files.',
-        function () {
-          nsp.configure(mockGenerator);
-
-          var files = projectBuilder.getIncludedFiles();
-          expect(files.length).toBe(1);
-          expect(files[0].from).toBe('.nsprc');
-          expect(files[0].to).toBe('.nsprc');
-        });
-    });
+    it('should do nothing',
+      function () {
+        var spy = spyOn(mockGenerator.config, 'defaults');
+        nsp.init(mockGenerator);
+        expect(spy.calls.any()).toBeFalsy();
+      });
   });
-})();
+
+  describe('prompt()', function () {
+    it('should return a generator',
+      function () {
+        var outputGenerator = nsp.prompt(mockGenerator);
+        expect(outputGenerator).toEqual(mockGenerator);
+      });
+
+    it('should add nsp to dependencies',
+      function () {
+        pkgBuilder.fromJSON('{"devDependencies":{}}');
+
+        var devDeps = pkgBuilder.getValue('devDependencies');
+        expect(devDeps.nsp).not.toBeDefined();
+
+        nsp.prompt(mockGenerator);
+
+        devDeps = pkgBuilder.getValue('devDependencies');
+        expect(devDeps.nsp).toBeDefined();
+      });
+
+    it('should add the prepublish hook to the project',
+      function () {
+        pkgBuilder.fromJSON('{}');
+
+        var scripts = pkgBuilder.getValue('scripts');
+        expect(scripts).not.toBeDefined();
+
+        nsp.prompt(mockGenerator);
+
+        var newScripts = pkgBuilder.getValue('scripts');
+        expect(newScripts.prepublish).toBeDefined();
+        expect(newScripts.prepublish).toEqual('nsp check');
+      });
+  });
+
+  describe('configure()', function () {
+    it('should return a generator',
+      function () {
+        var outputGenerator = nsp.configure(mockGenerator);
+        expect(outputGenerator).toEqual(mockGenerator);
+      });
+
+    it('should add .nsprc to the project files.',
+      function () {
+        nsp.configure(mockGenerator);
+
+        var files = projectBuilder.getIncludedFiles();
+        expect(files.length).toBe(1);
+        expect(files[0].from).toBe('.nsprc');
+        expect(files[0].to).toBe('.nsprc');
+      });
+  });
+});

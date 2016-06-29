@@ -13,57 +13,55 @@
  * License for the specific language governing permissions and limitations
  * under the License.
  */
-
 /**
  * Access to the global-dependencies.json file.
  */
-(function () {
-  'use strict';
 
-  var globalDependencies = require('../../../global-dependencies.json');
+'use strict';
 
-  /**
-   * Returns whether a dependency is in the global-dependencies list.
-   *
-   * @param {String} name The name of the dependency.
-   * @returns {Boolean} True if the dependency exists, otherwise false.
-   */
-  function containsDependency (name) {
-    return globalDependencies.hasOwnProperty(name);
-  }
+var globalDependencies = require('../../../global-dependencies.json');
 
-  /**
-   * Return the current acceptable version of the dependencies, or null.
-   *
-   * @param {String} name The dependency name.
-   * @returns {String|undefined} The version, or undefined.
-   */
-  function getVersion (name) {
-    return globalDependencies[name] || undefined;
-  }
+/**
+ * Returns whether a dependency is in the global-dependencies list.
+ *
+ * @param {String} name The name of the dependency.
+ * @returns {Boolean} True if the dependency exists, otherwise false.
+ */
+function containsDependency (name) {
+  return globalDependencies.hasOwnProperty(name);
+}
 
-  /**
-   * Given a list of dependencies, updates this list of dependencies to the versions that are
-   * currently set in global-dependencies.
-   *
-   * @param {{}} dependencies The list of dependencies.
-   * @returns {{}} The above list of dependencies, with only the appropriate versions updated.
-   */
-  function synchronizeDependencies (dependencies) {
-    var results = {};
-    for (var key in dependencies) {
-      if (globalDependencies.hasOwnProperty(key)) {
-        results[key] = globalDependencies[key];
-      } else {
-        results[key] = dependencies[key];
-      }
+/**
+ * Return the current acceptable version of the dependencies, or null.
+ *
+ * @param {String} name The dependency name.
+ * @returns {String|undefined} The version, or undefined.
+ */
+function getVersion (name) {
+  return globalDependencies[name] || undefined;
+}
+
+/**
+ * Given a list of dependencies, updates this list of dependencies to the versions that are
+ * currently set in global-dependencies.
+ *
+ * @param {{}} dependencies The list of dependencies.
+ * @returns {{}} The above list of dependencies, with only the appropriate versions updated.
+ */
+function synchronizeDependencies (dependencies) {
+  var results = {};
+  for (var key in dependencies) {
+    if (globalDependencies.hasOwnProperty(key)) {
+      results[key] = globalDependencies[key];
+    } else {
+      results[key] = dependencies[key];
     }
-    return results;
   }
+  return results;
+}
 
-  module.exports = {
-    contains: containsDependency,
-    read: getVersion,
-    synchronize: synchronizeDependencies
-  };
-})();
+module.exports = {
+  contains: containsDependency,
+  read: getVersion,
+  synchronize: synchronizeDependencies
+};

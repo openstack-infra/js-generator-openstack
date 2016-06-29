@@ -2,3 +2,5 @@ extends: openstack
 env:
   node: true
   jasmine: true
+rules:
+  strict: ["error", "global"]
