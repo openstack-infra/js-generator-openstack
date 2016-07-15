@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * Package builder module
+ * @module
+ */
+
 'use strict';
 
 var dependencies = require('./global_dependencies');
@@ -64,7 +69,7 @@ function writePackage () {
 /**
  * Add libraries to the package dependencies.
  *
- * @param {[]|String} libraryNames A list of all libraries to add to the dependencies.
+ * @param {Array|String} libraryNames A list of all libraries to add to the dependencies.
  * @param {String} type The type of dependency.
  * @returns {void}
  */
@@ -154,11 +159,18 @@ function addCommand (name, command) {
 }
 
 module.exports = {
+  /** @see {@link module:pkg_builder~readPackage} */
   fromJSON: readPackage,
+  /** @see {@link module:pkg_builder~writePackage} */
   toJSON: writePackage,
+  /** @see {@link module:pkg_builder~setValues} */
   setValues: setValues,
+  /** @see {@link module:pkg_builder~getValues} */
   getValues: getValues,
+  /** @see {@link module:pkg_builder~getValue} */
   getValue: getValue,
+  /** @see {@link module:pkg_builder~addDependencies} */
   addDependencies: addDependencies,
+  /** @see {@link module:pkg_builder~addCommand} */
   addCommand: addCommand
 };
