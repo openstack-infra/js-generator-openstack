@@ -10,7 +10,7 @@
     "prepublish": "nsp check",
     "lint": "eslint ./",
     "doc": "(cd doc; make html)",
-    "jsdoc": "jsdoc generators -r -d jsdoc_build"
+    "jsdoc": "jsdoc generators/app/lib -r -d jsdoc_build"
   },
   "keywords": [
     "yeoman-generator",
