@@ -1,0 +1,8 @@
+Code-Review+2: Beth Elwell <e.r.elwell@gmail.com>
+Workflow+1: Yujun Zhang <zhang.yujunz@zte.com.cn>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 15 Jul 2016 01:10:29 +0000
+Reviewed-on: https://review.openstack.org/322881
+Project: openstack-infra/js-generator-openstack
+Branch: refs/heads/master
