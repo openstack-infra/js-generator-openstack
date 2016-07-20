@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * Proejct builder module
+ * @module
+ */
+
 'use strict';
 
 var includedFiles = [];
@@ -98,19 +103,27 @@ function getIgnoredFiles () {
  *
  * @returns {void}
  */
-function clearAll () {
+function clear () {
   includedFiles = [];
   excludedFiles = [];
   ignoredFiles = [];
 }
 
 module.exports = {
+  /** @see {@link module:project_builder~addFile} */
   addFile: addFile,
+  /** @see {@link module:project_builder~writeFile} */
   writeFile: writeFile,
+  /** @see {@link module:project_builder~removeFile} */
   removeFile: removeFile,
+  /** @see {@link module:project_builder~ignoreFile} */
   ignoreFile: ignoreFile,
+  /** @see {@link module:project_builder~getIncludedFiles} */
   getIncludedFiles: getIncludedFiles,
+  /** @see {@link module:project_builder~getIgnoredFiles} */
   getIgnoredFiles: getIgnoredFiles,
+  /** @see {@link module:project_builder~getExcludedFiles} */
   getExcludedFiles: getExcludedFiles,
-  clear: clearAll
+  /** @see {@link module:project_builder~clear} */
+  clear: clear
 };
