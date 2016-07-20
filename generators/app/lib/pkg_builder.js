@@ -46,7 +46,7 @@ function synchronizeDependencies (dependencyMap) {
  * @param {String} pkgString The package string content.
  * @returns {void}
  */
-function readPackage (pkgString) {
+function fromJSON (pkgString) {
   pkgContent = JSON.parse(pkgString);
 }
 
@@ -55,7 +55,7 @@ function readPackage (pkgString) {
  *
  * @returns {String} The JSON content of the package, as a string.
  */
-function writePackage () {
+function toJSON () {
   // Clone the package content so we don't destroy what's in memory...
   var newContent = JSON.parse(JSON.stringify(pkgContent));
 
@@ -159,10 +159,10 @@ function addCommand (name, command) {
 }
 
 module.exports = {
-  /** @see {@link module:pkg_builder~readPackage} */
-  fromJSON: readPackage,
-  /** @see {@link module:pkg_builder~writePackage} */
-  toJSON: writePackage,
+  /** @see {@link module:pkg_builder~fromJSON} */
+  fromJSON: fromJSON,
+  /** @see {@link module:pkg_builder~toJSON} */
+  toJSON: toJSON,
   /** @see {@link module:pkg_builder~setValues} */
   setValues: setValues,
   /** @see {@link module:pkg_builder~getValues} */
