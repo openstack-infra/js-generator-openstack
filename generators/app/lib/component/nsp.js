@@ -18,6 +18,7 @@
  * This module adds the Node Security commandline tool (nsp) to the project.
  * Its job is to identify known vulnerabilities by scanning the projects
  * source and dependencies.
+ * @module
  */
 
 'use strict';
@@ -42,7 +43,7 @@ function noop (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function promptNsp (generator) {
+function prompt (generator) {
   // At this time, we don't actually need to prompt the user.
 
   // Add the dependencies.
@@ -58,13 +59,16 @@ function promptNsp (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function configureNsp (generator) {
+function configure (generator) {
   projectBuilder.addFile('.nsprc');
   return generator;
 }
 
 module.exports = {
+  /** @see {@link module:component/nsp~noop} */
   init: noop,
-  prompt: promptNsp,
-  configure: configureNsp
+  /** @see {@link module:component/nsp~prompt} */
+  prompt: prompt,
+  /** @see {@link module:component/nsp~configure} */
+  configure: configure
 };
