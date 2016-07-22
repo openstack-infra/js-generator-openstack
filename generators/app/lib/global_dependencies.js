@@ -17,6 +17,11 @@
  * Access to the global-dependencies.json file.
  */
 
+/**
+ * Global dependency module
+ * @module
+ */
+
 'use strict';
 
 var globalDependencies = require('../../../global-dependencies.json');
@@ -27,7 +32,7 @@ var globalDependencies = require('../../../global-dependencies.json');
  * @param {String} name The name of the dependency.
  * @returns {Boolean} True if the dependency exists, otherwise false.
  */
-function containsDependency (name) {
+function contains (name) {
   return globalDependencies.hasOwnProperty(name);
 }
 
@@ -37,7 +42,7 @@ function containsDependency (name) {
  * @param {String} name The dependency name.
  * @returns {String|undefined} The version, or undefined.
  */
-function getVersion (name) {
+function read (name) {
   return globalDependencies[name] || undefined;
 }
 
@@ -48,7 +53,7 @@ function getVersion (name) {
  * @param {{}} dependencies The list of dependencies.
  * @returns {{}} The above list of dependencies, with only the appropriate versions updated.
  */
-function synchronizeDependencies (dependencies) {
+function synchronize (dependencies) {
   var results = {};
   for (var key in dependencies) {
     if (globalDependencies.hasOwnProperty(key)) {
@@ -61,7 +66,10 @@ function synchronizeDependencies (dependencies) {
 }
 
 module.exports = {
-  contains: containsDependency,
-  read: getVersion,
-  synchronize: synchronizeDependencies
+  /** @see {@link module:global_dependencies~contains} */
+  contains: contains,
+  /** @see {@link module:global_dependencies~read} */
+  read: read,
+  /** @see {@link module:global_dependencies~synchronize} */
+  synchronize: synchronize
 };
