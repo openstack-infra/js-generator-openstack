@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * licence module
+ * @module
+ */
+
 'use strict';
 
 var projectBuilder = require('../project_builder');
@@ -35,7 +40,7 @@ function noop (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function configureLicense (generator) {
+function configure (generator) {
   projectBuilder.addFile('LICENSE');
   pkgBuilder.setValues({license: 'Apache-2.0'});
 
@@ -43,7 +48,10 @@ function configureLicense (generator) {
 }
 
 module.exports = {
+  /** @see {@link module:component/license~noop} */
   init: noop,
+  /** @see {@link module:component/license~noop} */
   prompt: noop,
-  configure: configureLicense
+  /** @see {@link module:component/license~configure} */
+  configure: configure
 };
