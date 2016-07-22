@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * Package eslint module
+ * @module
+ */
+
 'use strict';
 
 var pkgBuilder = require('../pkg_builder');
@@ -23,7 +28,7 @@ var yaml = require('js-yaml');
 var excludedPaths = [];
 var ignoreFile = '.eslintignore';
 var rcFile = '.eslintrc';
-var eslintrc = {extends: 'openstack'};
+var rcContent = {extends: 'openstack'};
 
 /**
  * This method configures the package builder with all options necessary to support eslint.
@@ -31,7 +36,7 @@ var eslintrc = {extends: 'openstack'};
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function promptEslint (generator) {
+function prompt (generator) {
   // At this time, we don't actually need to prompt the user.
 
   // Add the dependencies.
@@ -48,7 +53,7 @@ function promptEslint (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function initializeEslint (generator) {
+function init (generator) {
   var fs = generator.fs;
 
   // Re-initialize excluded paths.
@@ -70,7 +75,7 @@ function initializeEslint (generator) {
 
   // Read .eslintrc
   if (fs.exists(rcFile)) {
-    eslintrc = yaml.safeLoad(fs.read(rcFile));
+    rcContent = yaml.safeLoad(fs.read(rcFile));
   }
 
   return generator;
@@ -82,13 +87,13 @@ function initializeEslint (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function configureEslint (generator) {
-  if (buildEslintIgnore().length === 0) {
+function configure (generator) {
+  if (buildIgnore().length === 0) {
     projectBuilder.removeFile('.eslintignore');
   } else {
-    projectBuilder.writeFile('.eslintignore', buildEslintIgnore);
+    projectBuilder.writeFile('.eslintignore', buildIgnore);
   }
-  projectBuilder.writeFile('.eslintrc', buildEslintRc);
+  projectBuilder.writeFile('.eslintrc', buildRc);
 
   return generator;
 }
@@ -99,7 +104,7 @@ function configureEslint (generator) {
  *
  * @returns {string} The content of the .eslintignore file.
  */
-function buildEslintIgnore () {
+function buildIgnore () {
   var ignoredFiles = projectBuilder.getIgnoredFiles();
   ignoredFiles.forEach(function (item) {
     if (excludedPaths.indexOf(item) === -1) {
@@ -115,12 +120,15 @@ function buildEslintIgnore () {
  *
  * @returns {string} The content of the .eslintrc file.
  */
-function buildEslintRc () {
-  return yaml.safeDump(eslintrc);
+function buildRc () {
+  return yaml.safeDump(rcContent);
 }
 
 module.exports = {
-  init: initializeEslint,
-  prompt: promptEslint,
-  configure: configureEslint
+  /** @see {@link module:component/eslint~init} */
+  init: init,
+  /** @see {@link module:component/eslint~prompt} */
+  prompt: prompt,
+  /** @see {@link module:component/eslint~configure} */
+  configure: configure
 };
