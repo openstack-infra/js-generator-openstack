@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * gitignore module
+ * @module
+ */
+
 'use strict';
 
 var projectBuilder = require('../project_builder');
@@ -37,7 +42,7 @@ function noop (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function initGitignore (generator) {
+function init (generator) {
   var fs = generator.fs;
 
   // Reinitialize the ignore map.
@@ -67,7 +72,7 @@ function initGitignore (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function configureGitIgnore (generator) {
+function configure (generator) {
   var ignoreContent = buildGitignore();
   if (ignoreContent.length === 0) {
     // Delete the file if there's nothing to ignore.
@@ -97,7 +102,10 @@ function buildGitignore () {
 }
 
 module.exports = {
-  init: initGitignore,
+  /** @see {@link module:component/gitignore~init} */
+  init: init,
+  /** @see {@link module:component/gitignore~noop} */
   prompt: noop,
-  configure: configureGitIgnore
+  /** @see {@link module:component/gitignore~configure} */
+  configure: configure
 };
