@@ -2,7 +2,7 @@ verbose: false
 instrumentation:
     root: .
     include-all-sources: true
-    excludes: ['spec/**']
+    excludes: ['spec/**', 'doc/build/**', 'jsdoc_build/**']
     default-excludes: true
 reporting:
     print: detail
