@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * package module
+ * @module
+ */
+
 'use strict';
 
 var Q = require('q');
@@ -30,7 +35,7 @@ var packagePath = 'package.json';
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function promptPackage (generator) {
+function prompt (generator) {
   var deferred = Q.defer();
 
   if (!generator.options['non-interactive']) {
@@ -79,7 +84,7 @@ function promptPackage (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function initializePackage (generator) {
+function init (generator) {
   var fs = generator.fs;
 
   // Read package.json
@@ -109,13 +114,16 @@ function initializePackage (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function configurePkg (generator) {
+function configure (generator) {
   projectBuilder.writeFile('package.json', pkgBuilder.toJSON);
   return generator;
 }
 
 module.exports = {
-  init: initializePackage,
-  prompt: promptPackage,
-  configure: configurePkg
+  /** @see {@link module:component/pkg~init} */
+  init: init,
+  /** @see {@link module:component/pkg~prompt} */
+  prompt: prompt,
+  /** @see {@link module:component/pkg~configure} */
+  configure: configure
 };
