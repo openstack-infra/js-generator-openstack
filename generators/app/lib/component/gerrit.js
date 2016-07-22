@@ -14,6 +14,11 @@
  * under the License.
  */
 
+/**
+ * Package gerrit module
+ * @module
+ */
+
 'use strict';
 
 var projectBuilder = require('../project_builder');
@@ -42,7 +47,7 @@ var gerritEnabled = function(answers) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function initializeGerrit (generator) {
+function init (generator) {
   // Define our defaults
   iniContent = {
     gerrit: {
@@ -61,7 +66,7 @@ function initializeGerrit (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function promptUserOptions (generator) {
+function prompt (generator) {
 
   // Read the existing file and populate it as defaults.
   if (generator.fs.exists(gerritFile)) {
@@ -123,7 +128,7 @@ function promptUserOptions (generator) {
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function configureGerrit (generator) {
+function configure (generator) {
   if (gerritFileExists) {
     projectBuilder.writeFile(gerritFile, buildGerritFile);
   } else {
@@ -138,7 +143,10 @@ function buildGerritFile () {
 }
 
 module.exports = {
-  init: initializeGerrit,
-  prompt: promptUserOptions,
-  configure: configureGerrit
+  /** @see {@link module:component/gerrit~init} */
+  init: init,
+  /** @see {@link module:component/gerrit~prompt} */
+  prompt: prompt,
+  /** @see {@link module:component/gerrit~configure} */
+  configure: configure
 };
