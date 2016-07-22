@@ -9,7 +9,7 @@
     "posttest": "istanbul check-coverage",
     "prepublish": "nsp check",
     "lint": "eslint ./",
-    "doc": "(cd doc; make html)",
+    "docs": "(cd doc; make html)",
     "jsdoc": "jsdoc generators/app/lib -r -d jsdoc_build"
   },
   "keywords": [
