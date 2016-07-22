@@ -19,6 +19,7 @@
  * such as engine, common output directories, and language level. It informs
  * other generators, such as test framework generation, packaging tools,
  * and/or configuration files.
+ * @module
  */
 
 'use strict';
@@ -34,7 +35,7 @@ var projectBuilder = require('../project_builder');
  * @param {generator} generator The currently active generator.
  * @returns {generator} The passed generator, for promise chaining.
  */
-function initialize (generator) {
+function init (generator) {
 
   // Set our defaults:
   generator.config.defaults({
@@ -132,7 +133,10 @@ function configure (generator) {
 }
 
 module.exports = {
-  init: initialize,
+  /** @see {@link module:structure~init} */
+  init: init,
+  /** @see {@link module:structure~prompt} */
   prompt: prompt,
+  /** @see {@link module:structure~configure} */
   configure: configure
 };
