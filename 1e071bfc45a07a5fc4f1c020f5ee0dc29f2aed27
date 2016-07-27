@@ -1,0 +1,11 @@
+Code-Review+1: Zara <zara.zaimeche@codethink.co.uk>
+Code-Review+1: Dong Ma <winterma.dong@gmail.com>
+Code-Review+1: Rahul U Nair <rahulunair@gmail.com>
+Code-Review+2: Yujun Zhang <zhang.yujunz@zte.com.cn>
+Workflow+1: Yujun Zhang <zhang.yujunz@zte.com.cn>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Wed, 27 Jul 2016 06:50:57 +0000
+Reviewed-on: https://review.openstack.org/346057
+Project: openstack-infra/js-generator-openstack
+Branch: refs/heads/master
