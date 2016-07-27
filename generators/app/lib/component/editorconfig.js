@@ -14,7 +14,7 @@
  * under the License.
  */
 
-/*
+/**
  * editorconfig module
  * @module
  */
