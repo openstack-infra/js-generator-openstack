@@ -9,8 +9,8 @@
     "posttest": "istanbul check-coverage",
     "prepublish": "nsp check",
     "lint": "eslint ./",
-    "docs": "(cd doc; make html)",
-    "jsdoc": "jsdoc generators/app/lib -r -d jsdoc_build"
+    "docs": "npm run jsdoc; (cd doc; make html)",
+    "jsdoc": "jsdoc -t node_modules/jsdoc-sphinx/template -d ./doc/source/jsdoc ./generators/app/lib"
   },
   "keywords": [
     "yeoman-generator",
@@ -36,6 +36,7 @@
     "istanbul": "^0.4.2",
     "jasmine": "^2.4.1",
     "jsdoc": "^3.4.0",
+    "jsdoc-sphinx": "0.0.6",
     "karma": "^0.13.22",
     "karma-htmlfile-reporter": "^0.2.2",
     "mem-fs": "^1.1.2",
