@@ -31,8 +31,8 @@
     "yeoman-generator": "^0.22.5"
   },
   "devDependencies": {
-    "eslint": "^2.13.1",
-    "eslint-config-openstack": "^2.0.0",
+    "eslint": "^3.3.1",
+    "eslint-config-openstack": "^4.0.1",
     "istanbul": "^0.4.2",
     "jasmine": "^2.4.1",
     "jsdoc": "^3.4.0",
