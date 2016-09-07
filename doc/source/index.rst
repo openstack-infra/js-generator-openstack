@@ -43,6 +43,8 @@ Topics
 
      development_guide
      specs
+     reference_documentation
+
 
 .. _StoryBoard: https://storyboard.openstack.org/#!/project/842
 .. _gerrit: https://review.openstack.org/#/q/status:open+AND+project:openstack/js-generator-openstack,n,z
