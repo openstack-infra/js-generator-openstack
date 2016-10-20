@@ -28,7 +28,7 @@
     "js-yaml": "^3.5.5",
     "q": "^1.4.1",
     "semver": "^5.1.0",
-    "yeoman-generator": "^0.22.5"
+    "yeoman-generator": "^0.24.1"
   },
   "devDependencies": {
     "eslint": "^3.3.1",
