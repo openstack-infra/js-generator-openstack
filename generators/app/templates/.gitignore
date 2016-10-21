@@ -19,6 +19,7 @@ reports
 package
 dist
 www
+build
 
 # Dependency directories
 node_modules
