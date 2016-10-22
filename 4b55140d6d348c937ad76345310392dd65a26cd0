@@ -1,0 +1,8 @@
+Code-Review+2: Bruno Morel <bmorel@internap.com>
+Workflow+1: Yujun Zhang <zhang.yujunz@zte.com.cn>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Sat, 22 Oct 2016 02:28:47 +0000
+Reviewed-on: https://review.openstack.org/389612
+Project: openstack-infra/js-generator-openstack
+Branch: refs/heads/master
