@@ -5,6 +5,7 @@ apt-transport-https
 lsb-release
 ant
 build-essential [platform:dpkg]
+chromium-browser
 curl
 cyrus-sasl-devel [platform:rpm]
 dbus
